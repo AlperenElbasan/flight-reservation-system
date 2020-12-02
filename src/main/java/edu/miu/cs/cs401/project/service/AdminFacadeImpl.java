@@ -44,15 +44,12 @@ public class AdminFacadeImpl implements AdminFacade {
         StorageHandler.passengers.remove(passenger);
     }
 
-
     // Agent CRUD
     @Override
     public void readAgent(Agent agent) {
         System.out.println("=======================");
-//        System.out.println("FirstName: " + agent.getFirstName());
-//        System.out.println("LastName: " + agent.getLastName());
-//        System.out.println("BirthDate: " + agent.getBirthDate());
-//        System.out.println("Email: " + agent.getEmail());
+        System.out.println("AgentId: " + agent.getUuid());
+        System.out.println("LastName: " + agent.getPassengers().toString());
         System.out.println("=======================");
     }
 
@@ -113,7 +110,6 @@ public class AdminFacadeImpl implements AdminFacade {
 
     @Override
     public void deleteAirline(Airline airline){
-        //TODO: Bayartsogt - please use hasmap to handle. See reservationsMap in StorageHandler. Because it has error now so I commented out temporary.
         StorageHandler.airlines.remove(airline);
     }
 }
