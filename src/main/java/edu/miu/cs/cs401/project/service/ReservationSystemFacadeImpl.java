@@ -1,38 +1,54 @@
 package edu.miu.cs.cs401.project.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 
-import edu.miu.cs.cs401.project.domain.Agent;
-import edu.miu.cs.cs401.project.domain.Airline;
-import edu.miu.cs.cs401.project.domain.Airport;
-import edu.miu.cs.cs401.project.domain.Flight;
-import edu.miu.cs.cs401.project.domain.Passenger;
-import edu.miu.cs.cs401.project.domain.Reservation;
+import edu.miu.cs.cs401.project.domain.*;
+import edu.miu.cs.cs401.project.helpers.StorageHandler;
 
 public class ReservationSystemFacadeImpl implements ReservationSystemFacade {
 
 	@Override
 	public List<Airport> findAllAirports() {
-		// TODO Auto-generated method stub
-		return null;
+		return StorageHandler.airports;
 	}
 
 	@Override
 	public Airport findAirportByAirportCode(String airportCode) {
-		// TODO Auto-generated method stub
+		for (Airport airport: StorageHandler.airports)
+			if (airport.getCode().equals(airportCode))
+				return airport;
 		return null;
 	}
 
 	@Override
 	public List<Airport> findAirportsByCity(String city) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Airport> airports = new ArrayList<>();
+		for (Airport airport: StorageHandler.airports)
+			if (airport.getAddress().getCity().equals(city))
+				airports.add(airport);
+		return airports;
 	}
 
 	@Override
 	public List<Airline> findAirlinesByAirportCode(String airportCode) {
-		// TODO Auto-generated method stub
-		return null;
+		Airport departureAirport = findAirportByAirportCode(airportCode);
+
+		if (departureAirport == null) return new ArrayList<>();
+
+		// perform the query
+		List<FlightNumber> depFlights = departureAirport.getDepartureFlights();
+		List<Airline> airlines = new ArrayList<>();
+		for (FlightNumber depFlight: depFlights) {
+			Airline depFlightAirline = depFlight.getAirlineOwn();
+			if (!airlines.contains(depFlightAirline)) {
+				airlines.add(depFlightAirline);
+			}
+
+		}
+
+		return airlines;
 	}
 
 	@Override

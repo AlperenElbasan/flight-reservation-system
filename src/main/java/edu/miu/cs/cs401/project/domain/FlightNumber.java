@@ -54,8 +54,8 @@ public class FlightNumber {
     }
     @Override
     public String toString() {
-        return "FlightNumber [number=" + number + ", airlineOwn=" + airlineOwn.getCode() + ", departureAirport=" + departureAirport.getName()
-                + ", arrivalAirport=" + arrivalAirport.getName() + ", departureTime=" + departureTime + ", arrivalTime="
+        return "FlightNumber [number=" + number + ", airlineOwn=" + airlineOwn.getCode() + ", departureAirport=" + departureAirport.getCode()
+                + ", arrivalAirport=" + arrivalAirport.getCode() + ", departureTime=" + departureTime + ", arrivalTime="
                 + arrivalTime + "]";
     }
 

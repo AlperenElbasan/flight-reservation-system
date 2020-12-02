@@ -30,5 +30,15 @@ public class Address {
     public int getZip() {
         return zip;
     }
+    @Override
+    public String toString() {
+        return "Address{" +
+                "uuid=" + uuid +
+                ", street='" + street + '\'' +
+                ", city='" + city + '\'' +
+                ", state='" + state + '\'' +
+                ", zip=" + zip +
+                '}';
+    }
 }
 
