@@ -9,6 +9,11 @@ public class Reservation {
     private final UUID uuid = UUID.randomUUID();
     private final List<Ticket> tickets = new ArrayList<>();;
     private UUID AgentId = null;
+
+    public ReservationStatus getStatus() {
+        return status;
+    }
+
     private ReservationStatus status = ReservationStatus.NONE;
     private String reservationCode;
 
