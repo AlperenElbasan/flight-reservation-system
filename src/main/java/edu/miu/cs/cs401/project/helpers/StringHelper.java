@@ -24,6 +24,20 @@ public class StringHelper {
     	};
     	return cities[(int)(Math.random() * cities.length)];
     }
+
+	public static String getRandomStateName() {
+		final String[] states = {
+				"IOWA",
+				"ILLINOIS",
+				"WASHINGTON",
+				"ARIZONA",
+				"CALIFORNIA",
+				"FLORIDA",
+				"TEXAS",
+				"ALASKA"
+		};
+		return states[(int)(Math.random() * states.length)];
+	}
     public static void main(String[] args) {
     	for (int i= 0; i< 5; i++)
     		System.out.println(getRandomCityName());

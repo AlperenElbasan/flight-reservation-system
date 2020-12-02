@@ -57,7 +57,7 @@ public class StorageHandler {
     // End reservations
 
     public static Address getRandomAddress() {
-    	return new Address("Main road", "Fairfield", "IOWA", (int)(Math.random() * 1000) + 3000);
+    	return new Address("Main road", StringHelper.getRandomCityName(), StringHelper.getRandomStateName(), (int)(Math.random() * 1000) + 3000);
     }
     
     public static void createRandomAddresses(int amount) {
@@ -113,7 +113,7 @@ public class StorageHandler {
     
     public static Airport getRandomAirport() {
     	final String airportCode = ((int)(Math.random() * 900)+ 100 ) + "";
-    	return new Airport(airportCode, StringHelper.getRandomAlphaString(5) + " Airport", getRandomAddress());
+    	return new Airport(airportCode, StringHelper.getRandomCityName() + " Airport", getRandomAddress());
     }
     
     public static Airline getRandomAirline() {
