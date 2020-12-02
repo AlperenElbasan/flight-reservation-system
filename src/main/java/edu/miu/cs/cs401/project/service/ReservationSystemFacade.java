@@ -25,6 +25,10 @@ public interface ReservationSystemFacade {
 	List<Reservation> findReservationsByPassengerId(UUID passengerId);
 	
 	List<Passenger> findPassengersByAgentCode(String agentCode);
+
+	Passenger findPassengersByFirstName(String firstName);
+
+	Passenger findPassengersByLastName(String lastName);
 	
 	Reservation createReservation(Passenger passenger, List<Flight> flights); // Passenger reserves
 	
@@ -33,5 +37,4 @@ public interface ReservationSystemFacade {
 	void confirmReservation(String reservationCode);
 	
 	void cancelReservation(String reservationCode);
-	
 }

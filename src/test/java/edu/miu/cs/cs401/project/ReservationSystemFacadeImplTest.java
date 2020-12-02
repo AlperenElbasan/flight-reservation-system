@@ -1,18 +1,25 @@
 package edu.miu.cs.cs401.project;
 
-import edu.miu.cs.cs401.project.constants.ReservationStatus;
-import edu.miu.cs.cs401.project.domain.*;
-import edu.miu.cs.cs401.project.helpers.StorageHandler;
-import edu.miu.cs.cs401.project.service.ReservationSystemFacade;
-import edu.miu.cs.cs401.project.service.ReservationSystemFacadeImpl;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
+import edu.miu.cs.cs401.project.domain.Agent;
+import edu.miu.cs.cs401.project.domain.Airline;
+import edu.miu.cs.cs401.project.domain.Airport;
+import edu.miu.cs.cs401.project.domain.Flight;
+import edu.miu.cs.cs401.project.domain.FlightNumber;
+import edu.miu.cs.cs401.project.domain.Passenger;
+import edu.miu.cs.cs401.project.domain.Reservation;
+import edu.miu.cs.cs401.project.helpers.StorageHandler;
+import edu.miu.cs.cs401.project.service.ReservationSystemFacade;
+import edu.miu.cs.cs401.project.service.ReservationSystemFacadeImpl;
+import edu.miu.cs.cs401.project.constants.ReservationStatus;
 
 class ReservationSystemFacadeImplTest {
 
@@ -65,7 +72,7 @@ class ReservationSystemFacadeImplTest {
 	}
 	
 	@Test
-	void findAirlinesByAirportCode() {
+	void findAirlinesByAirportCodeTest() {
 		StorageHandler.emptyAirports();
 		StorageHandler.createRandomAirports(15);
 		
@@ -86,6 +93,25 @@ class ReservationSystemFacadeImplTest {
 		List<Airline> airlines = facade.findAirlinesByAirportCode(StorageHandler.airports.get(0).getCode());
 		assertNotNull(airlines);
 		assertFalse(airlines.isEmpty());
+
+	}
+
+	@Test
+	void findFlightsFromToTest() {
+		StorageHandler.emptyFlights();
+		StorageHandler.emptyAirports();
+		StorageHandler.createRandomFlight(10);
+
+		final int SIZE = 5;
+
+		Airport departureAirport = new Airport("214", "Departure Airport", StorageHandler.getRandomAddress());
+		Airport arrivalAirport = new Airport("215", "Arrival Airport", StorageHandler.getRandomAddress());
+		StorageHandler.createRandomFlights(SIZE, departureAirport, arrivalAirport);
+
+
+		List<Flight> flights = facade.findFlightsFromTo(departureAirport.getName(), arrivalAirport.getName());
+		assertNotNull(flights);
+		assertTrue(flights.size() == SIZE);
 	}
 
 	// For agent reservation
@@ -146,5 +172,21 @@ class ReservationSystemFacadeImplTest {
 
 		assertNotNull(re);
 		assertEquals(re.getStatus(), ReservationStatus.CANCEL);
+	}
+
+	@Test
+	public void findPassengersByFirstName() {
+		List<Passenger> listPassengers = StorageHandler.getListPassenger(5);
+		Passenger p = facade.findPassengersByFirstName("name2");
+		assertNotNull(p);
+		assertEquals(p.getFirstName(), "name2");
+	}
+
+	@Test
+	public void findPassengersByLastName() {
+		List<Passenger> listPassengers = StorageHandler.getListPassenger(5);
+		Passenger p = facade.findPassengersByLastName("last name3");
+		assertNotNull(p);
+		assertEquals(p.getLastName(), "last name3");
 	}
 }

@@ -24,8 +24,4 @@ public class StringHelper {
     	};
     	return cities[(int)(Math.random() * cities.length)];
     }
-    public static void main(String[] args) {
-    	for (int i= 0; i< 5; i++)
-    		System.out.println(getRandomCityName());
-	}
 }
