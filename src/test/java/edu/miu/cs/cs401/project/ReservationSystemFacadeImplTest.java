@@ -173,4 +173,20 @@ class ReservationSystemFacadeImplTest {
 		assertNotNull(re);
 		assertEquals(re.getStatus(), ReservationStatus.CANCEL);
 	}
+
+	@Test
+	public void findPassengersByFirstName() {
+		List<Passenger> listPassengers = StorageHandler.getListPassenger(5);
+		Passenger p = facade.findPassengersByFirstName("name2");
+		assertNotNull(p);
+		assertEquals(p.getFirstName(), "name2");
+	}
+
+	@Test
+	public void findPassengersByLastName() {
+		List<Passenger> listPassengers = StorageHandler.getListPassenger(5);
+		Passenger p = facade.findPassengersByLastName("last name3");
+		assertNotNull(p);
+		assertEquals(p.getLastName(), "last name3");
+	}
 }

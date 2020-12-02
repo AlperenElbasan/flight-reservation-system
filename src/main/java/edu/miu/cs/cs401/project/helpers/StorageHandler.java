@@ -108,6 +108,10 @@ public class StorageHandler {
                 getRandomAddress()
         );
     }
+
+    public static Agent getRandomAgent(int amountPassenger){
+        return new Agent(getListPassenger(amountPassenger));
+    }
     
     public static void emptyAddresses() {
     	addresses.removeAll(addresses);
