@@ -7,8 +7,9 @@ import java.util.Date;
 public interface AdminFacade {
 
     void createPassenger(String firstName, String lastName,
-                                   Date birthDate, String email,
-                                   Address residenceAddress);
+                                        Date birthDate, String email,
+                                        Address residenceAddress);
+
     void readPassenger(Passenger passenger);
     void updatePassengerFirstName(Passenger passenger, String firstName);
     void updatePassengerLastName(Passenger passenger, String lastName);

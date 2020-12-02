@@ -24,6 +24,16 @@ public class Airline {
     public String getHistory() {
         return history;
     }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public void setHistory(String history) {
+        this.history = history;
+    }
     @Override
     public String toString() {
         return "Airline [code=" + code + ", name=" + name + ", history=" + history + "]";
