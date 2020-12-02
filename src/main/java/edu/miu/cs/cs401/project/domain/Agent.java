@@ -1,12 +1,18 @@
 package edu.miu.cs.cs401.project.domain;
 
+import java.util.ArrayList;
 import java.util.UUID;
 import java.util.List;
-import java.util.ArrayList;
 
 public class Agent {
-    private final UUID uuid = UUID.randomUUID();
-    private final List<Passenger> passengers = new ArrayList<>();
+    private final UUID uuid;
+    private final List<Passenger> passengers;
+
+    public Agent() {
+        this.uuid = UUID.randomUUID();;
+        this.passengers = new ArrayList<>();;
+    }
+
     public UUID getUuid() {
         return uuid;
     }

@@ -6,10 +6,12 @@ import java.security.SecureRandom;
 import java.util.*;
 
 public class StorageHandler {
-	public static List<Airport> airports = new ArrayList<>();
+    public static List<Airport> airports = new ArrayList<>();
+    public static List<Airline> airlines = new ArrayList<>();
     public static List<Address> addresses = new ArrayList<>();
     public static List<FlightNumber> flightNumbers = new ArrayList<>();
     public static List<Flight> flights = new ArrayList<>();
+    public static List<Agent> agents = new ArrayList<>();
     public static List<Passenger> passengers = new ArrayList<>();
     public static List<Reservation> reservations = new ArrayList<>();
 

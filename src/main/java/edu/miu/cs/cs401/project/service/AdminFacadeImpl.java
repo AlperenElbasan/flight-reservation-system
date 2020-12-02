@@ -57,23 +57,8 @@ public class AdminFacadeImpl implements AdminFacade {
     }
 
     @Override
-    public void updateAgentFirstName(Agent agent, String firstName) {
-
-    }
-
-    @Override
-    public void updateAgentLastName(Agent agent, String lastName) {
-
-    }
-
-    @Override
-    public void updateAgentEmail(Agent agent, String email) {
-
-    }
-
-    //TODO: Bayartsogt - please use hasmap to handle. See reservationsMap in StorageHandler. Because it has error now so I commented out temporary.    @Override
     public void deleteAgent(Agent agent) {
-
+        StorageHandler.agents.remove(agent);
     }
 
     @Override
@@ -126,8 +111,9 @@ public class AdminFacadeImpl implements AdminFacade {
         airline.setHistory(history);
     }
 
+    @Override
     public void deleteAirline(Airline airline){
         //TODO: Bayartsogt - please use hasmap to handle. See reservationsMap in StorageHandler. Because it has error now so I commented out temporary.
-//        StorageHandler.airlines.remove(airline);
+        StorageHandler.airlines.remove(airline);
     }
 }

@@ -16,11 +16,7 @@ public interface AdminFacade {
     void updatePassengerEmail(Passenger passenger, String email);
     void deletePassenger(Passenger passenger);
 
-
     void readAgent(Agent agent);
-    void updateAgentFirstName(Agent agent, String firstName);
-    void updateAgentLastName(Agent agent, String lastName);
-    void updateAgentEmail(Agent agent, String email);
     void deleteAgent(Agent agent);
 
     void readAirport(Airport airport);
