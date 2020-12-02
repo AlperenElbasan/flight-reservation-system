@@ -1,6 +1,7 @@
 package edu.miu.cs.cs401.project.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import edu.miu.cs.cs401.project.domain.Agent;
 import edu.miu.cs.cs401.project.domain.Airline;
@@ -21,7 +22,7 @@ public interface ReservationSystemFacade {
 	
 	List<Flight> findFlightsFromTo(String departure, String arrival);
 	
-	List<Reservation> findReservationsByPassengerId(Integer passengerId);
+	List<Reservation> findReservationsByPassengerId(UUID passengerId);
 	
 	List<Passenger> findPassengersByAgentCode(String agentCode);
 	
