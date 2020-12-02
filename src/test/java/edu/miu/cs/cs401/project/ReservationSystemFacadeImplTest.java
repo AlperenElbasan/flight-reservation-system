@@ -9,12 +9,17 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import edu.miu.cs.cs401.project.domain.Agent;
 import edu.miu.cs.cs401.project.domain.Airline;
 import edu.miu.cs.cs401.project.domain.Airport;
+import edu.miu.cs.cs401.project.domain.Flight;
 import edu.miu.cs.cs401.project.domain.FlightNumber;
+import edu.miu.cs.cs401.project.domain.Passenger;
+import edu.miu.cs.cs401.project.domain.Reservation;
 import edu.miu.cs.cs401.project.helpers.StorageHandler;
 import edu.miu.cs.cs401.project.service.ReservationSystemFacade;
 import edu.miu.cs.cs401.project.service.ReservationSystemFacadeImpl;
+import edu.miu.cs.cs401.project.constants.ReservationStatus;
 
 class ReservationSystemFacadeImplTest {
 
@@ -67,7 +72,7 @@ class ReservationSystemFacadeImplTest {
 	}
 	
 	@Test
-	void findAirlinesByAirportCode() {
+	void findAirlinesByAirportCodeTest() {
 		StorageHandler.emptyAirports();
 		StorageHandler.createRandomAirports(15);
 		
@@ -88,6 +93,84 @@ class ReservationSystemFacadeImplTest {
 		List<Airline> airlines = facade.findAirlinesByAirportCode(StorageHandler.airports.get(0).getCode());
 		assertNotNull(airlines);
 		assertFalse(airlines.isEmpty());
-			
+
+	}
+
+	@Test
+	void findFlightsFromToTest() {
+		StorageHandler.emptyFlights();
+		StorageHandler.emptyAirports();
+		StorageHandler.createRandomFlight(10);
+
+		final int SIZE = 5;
+
+		Airport departureAirport = new Airport("214", "Departure Airport", StorageHandler.getRandomAddress());
+		Airport arrivalAirport = new Airport("215", "Arrival Airport", StorageHandler.getRandomAddress());
+		StorageHandler.createRandomFlights(SIZE, departureAirport, arrivalAirport);
+
+
+		List<Flight> flights = facade.findFlightsFromTo(departureAirport.getName(), arrivalAirport.getName());
+		assertNotNull(flights);
+		assertTrue(flights.size() == SIZE);
+	}
+
+	// For agent reservation
+	@Test
+	public void testCreateReservation() {
+		Agent agent = new Agent();
+		agent.addPassenger(StorageHandler.getRandomPassenger(1));
+		agent.addPassenger(StorageHandler.getRandomPassenger(2));
+		List<Flight> flights = StorageHandler.generateListFlightInstance(5);
+		Passenger passenger = StorageHandler.getRandomPassenger(2);
+
+		Reservation re = facade.createReservation(agent, passenger, flights);
+		assertNotNull(re);
+		assertEquals(re.getAgentId(), agent.getUuid());
+		assertEquals(StorageHandler.getReservationByCode(re.getReservationCode()), re );
+		assertEquals(passenger.getReservations().get(0), re );
+		assertEquals(re.getTickets().size(), 5 );
+	}
+
+	// For passenger reservation
+	@Test
+	public void testTestCreateReservation() {
+		List<Flight> flights = StorageHandler.generateListFlightInstance(5);
+		Passenger passenger = StorageHandler.getRandomPassenger(2);
+
+		Reservation re = facade.createReservation(passenger, flights);
+		assertNotNull(re);
+		assertEquals(StorageHandler.getReservationByCode(re.getReservationCode()), re );
+		assertEquals(passenger.getReservations().get(0), re );
+		assertEquals(re.getTickets().size(), 5 );
+	}
+
+	@Test
+	public void testConfirmReservation() {
+		// generate a reservation
+		Agent agent = new Agent();
+		agent.addPassenger(StorageHandler.getRandomPassenger(1));
+		agent.addPassenger(StorageHandler.getRandomPassenger(2));
+		List<Flight> flights = StorageHandler.generateListFlightInstance(5);
+		Passenger passenger = StorageHandler.getRandomPassenger(2);
+		Reservation re = facade.createReservation(agent, passenger, flights);
+		re.confirm();
+
+		assertNotNull(re);
+		assertEquals(re.getStatus(), ReservationStatus.CONFIRM_PURCHASE);
+	}
+
+	@Test
+	public void testCancelReservation() {
+		// generate a reservation
+		Agent agent = new Agent();
+		agent.addPassenger(StorageHandler.getRandomPassenger(1));
+		agent.addPassenger(StorageHandler.getRandomPassenger(2));
+		List<Flight> flights = StorageHandler.generateListFlightInstance(5);
+		Passenger passenger = StorageHandler.getRandomPassenger(2);
+		Reservation re = facade.createReservation(agent, passenger, flights);
+		re.cancel();
+
+		assertNotNull(re);
+		assertEquals(re.getStatus(), ReservationStatus.CANCEL);
 	}
 }

@@ -42,4 +42,5 @@ public class StringHelper {
     	for (int i= 0; i< 5; i++)
     		System.out.println(getRandomCityName());
 	}
+
 }

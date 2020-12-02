@@ -6,10 +6,12 @@ import java.security.SecureRandom;
 import java.util.*;
 
 public class StorageHandler {
-	public static List<Airport> airports = new ArrayList<>();
+    public static List<Airport> airports = new ArrayList<>();
+    public static List<Airline> airlines = new ArrayList<>();
     public static List<Address> addresses = new ArrayList<>();
     public static List<FlightNumber> flightNumbers = new ArrayList<>();
     public static List<Flight> flights = new ArrayList<>();
+    public static List<Agent> agents = new ArrayList<>();
     public static List<Passenger> passengers = new ArrayList<>();
     public static List<Reservation> reservations = new ArrayList<>();
 
@@ -129,6 +131,10 @@ public class StorageHandler {
     public static void emptyAirports() {
     	airports.removeAll(airports);
     }
+    
+    public static void emptyFlights() {
+    	flights.removeAll(flights);
+    }
 
     public static FlightNumber createRandomFlight(int amount) {
         int number = (int)Math.random();
@@ -139,6 +145,43 @@ public class StorageHandler {
         Date departureTime = new Date();
         Date arrivalTime = new Date();
         return new FlightNumber(number, capacity, airlineOwn, departureAirport, arrivalAirport, departureTime, arrivalTime);
+    }
+    
+    public static void createRandomFlightNumbers(int amount, Airport departureAirport, Airport arrivalAirport) {
+    	for (int i = 0; i < amount; i++)
+        	flightNumbers.add(getRandomFlightNumber(departureAirport, arrivalAirport));
+    }
+
+	private static FlightNumber getRandomFlightNumber(Airport departureAirport, Airport arrivalAirport) {
+		return new FlightNumber(
+				(int)Math.random(),
+				300,
+				new Airline("AIA", "American Airline", "history"),
+				departureAirport,
+				arrivalAirport,
+				new Date(),
+				new Date()
+			);
+	}
+    
+    public static void createRandomFlights(int amount, Airport departureAirport, Airport arrivalAirport) {
+    	for (int i = 0; i < amount; i++)
+        	flights.add(getRandomFlight(departureAirport, arrivalAirport));
+    }
+    
+    public static Flight getRandomFlight(Airport departureAirport, Airport arrivalAirport) {
+        Date dateFlight = new Date();
+        List<Passenger> passengers = getListPassenger(10);
+        List<String> pilots = createRandomPilots(5);
+        List<String> crews = createRandomCrew(5);
+
+        return new Flight(
+        		getRandomFlightNumber(departureAirport, arrivalAirport),
+                dateFlight,
+                passengers,
+                crews,
+                pilots
+            );
     }
 
     public static List<String> createRandomPilots(int amount) {
