@@ -13,6 +13,11 @@ public class Agent {
         this.passengers = new ArrayList<>();;
     }
 
+    public Agent(List<Passenger> passengers) {
+        this.uuid = UUID.randomUUID();;
+        this.passengers = passengers;;
+    }
+
     public UUID getUuid() {
         return uuid;
     }

@@ -79,7 +79,31 @@ public class ReservationSystemFacadeImpl implements ReservationSystemFacade {
 
 	@Override
 	public List<Passenger> findPassengersByAgentCode(String agentCode) {
-		// TODO Auto-generated method stub
+		for (Agent a : StorageHandler.agents) {
+			if (a.getUuid().equals(agentCode)) {
+				return a.getPassengers();
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public Passenger findPassengersByFirstName(String firstName) {
+		for (Passenger p : StorageHandler.passengers) {
+			if (p.getFirstName().equals(firstName)) {
+				return p;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public Passenger findPassengersByLastName(String lastName) {
+		for (Passenger p : StorageHandler.passengers) {
+			if (p.getLastName().equals(lastName)) {
+				return p;
+			}
+		}
 		return null;
 	}
 
