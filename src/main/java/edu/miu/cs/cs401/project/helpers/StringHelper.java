@@ -11,4 +11,21 @@ public class StringHelper {
             sb.append(AB.charAt(rnd.nextInt(AB.length())));
         return sb.toString();
     }
+    public static String getRandomCityName() {
+    	final String[] cities = {
+    			"Fairfield",
+    			"Chicago",
+    			"New York City",
+    			"Los Angeles",
+    			"Tampa",
+    			"Miami",
+    			"Seattle",
+    			"Sunnyvale"
+    	};
+    	return cities[(int)(Math.random() * cities.length)];
+    }
+    public static void main(String[] args) {
+    	for (int i= 0; i< 5; i++)
+    		System.out.println(getRandomCityName());
+	}
 }
