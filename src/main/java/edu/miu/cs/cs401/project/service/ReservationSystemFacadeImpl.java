@@ -162,13 +162,14 @@ public class ReservationSystemFacadeImpl implements ReservationSystemFacade {
 			return null;
 		}
 
-		for (Agent agent: StorageHandler.agents)
+		for (Agent agent: StorageHandler.agents) {
 			if (agent.getUuid().toString()
 					.replace("-", "")
-					.substring(0,4)
+					.substring(0, 5)
 					.toUpperCase()
 					.equals(agentId.toUpperCase()))
 				return agent;
+		}
 		return null;
 	}
 }

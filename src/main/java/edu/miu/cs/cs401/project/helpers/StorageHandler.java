@@ -112,7 +112,9 @@ public class StorageHandler {
     public static Agent getRandomAgent(int amountPassenger){
         return new Agent(getListPassenger(amountPassenger));
     }
-    
+
+    public static void addAgent(Agent agent){agents.add(agent); }
+
     public static void emptyAddresses() {
     	addresses.removeAll(addresses);
     }
