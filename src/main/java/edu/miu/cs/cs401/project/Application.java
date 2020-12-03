@@ -14,34 +14,39 @@ import java.util.UUID;
 
 public class Application {
 
-	public static void passengerFlow(String fname, String lname) throws ParseException {
+	public static void passengerFlow() throws ParseException {
 		Scanner scanner = new Scanner(System.in);
-		boolean newPassenger;
 		Passenger passenger;
 
 		// and create the object for reservation facade implementation
 		ReservationSystemFacade facade = new ReservationSystemFacadeImpl();
 
 		// Check if Passenger new?
-		if(facade.findPassengersByName(fname, lname) != null){
-			System.out.println("Welcome back " + fname + " " + lname +" to Airline Reservation System");
-			passenger = facade.findPassengersByName(fname, lname);
-			newPassenger = false;
-		} else {
-			System.out.println("Welcome " + fname + " " + lname +" to Airline Reservation System");
-			System.out.println("We need more information for register new passenger");
-			System.out.println("Email: ");
-			String email = scanner.next();
-			System.out.println("Date of birth (DD/MM/YYYY): ");
-			Date dob = new SimpleDateFormat("dd/MM/yyyy").parse(scanner.next());
-			passenger = new Passenger(fname, lname, dob, email, StorageHandler.getRandomAddress());
-			System.out.println("Your register is Done. ");
-			newPassenger = true;
-		}
+//		if(facade.findPassengersByName(fname, lname) != null){
+//			System.out.println("Welcome back " + fname + " " + lname +" to Airline Reservation System");
+//			passenger = StorageHandler.passengers.get(0);
+//			newPassenger = false;
+//		} else {
+//			System.out.println("Welcome " + fname + " " + lname +" to Airline Reservation System");
+//			System.out.println("We need more information for register new passenger");
+//			System.out.println("Email: ");
+//			String email = scanner.next();
+//			System.out.println("Date of birth (DD/MM/YYYY): ");
+//			Date dob = new SimpleDateFormat("dd/MM/yyyy").parse(scanner.next());
+//			passenger = new Passenger(fname, lname, dob, email, StorageHandler.getRandomAddress());
+//			System.out.println("Your register is Done. ");
+//			newPassenger = true;
+//		}
+
+		passenger = StorageHandler.passengers.get(0);
 
 		// List out use case for user
 
 		while (true) {
+			System.out.println("========Welcome Passenger "+ passenger.getFirstName() +  " " + passenger.getLastName() +"=========");
+			System.out.println();
+
+
 			System.out.println("This is some action you can do: ");
 			System.out.println(
 					"1. List all available Airports" +
@@ -57,9 +62,9 @@ public class Application {
 				break;
 			}
 
-			PassengerAction(action, passenger, newPassenger, facade);
-		}
 
+			PassengerAction(action, passenger, false, facade);
+		}
 	}
 
 	public static void PassengerAction(String actionCase, Passenger p, boolean newPassenger, ReservationSystemFacade facade){
@@ -101,6 +106,13 @@ public class Application {
 				System.out.println("Please select Airport Code to get Airlines list: ");
 				// print out airlines in this airport
 				List<Airline> airlinesByAirportCode = facade.findAirlinesByAirportCode(scanner.nextLine());
+
+				if (airlinesByAirportCode.size() == 0) {
+					System.out.println("OOP, No Airlines");
+					break;
+				}
+
+				System.out.println("We have Airlines list below: ");
 				for (Airline airline : airlinesByAirportCode) {
 					System.out.println("=================");
 					System.out.println("Name: " + airline.getName() +
@@ -148,67 +160,73 @@ public class Application {
 				break;
 
 			case "5":
-				if(newPassenger) {
-					System.out.println("You done have any Reservation now");
-					System.out.println("Do you want to make a Reservation? (Y/N)");
-					String makeReservationYN = scanner.next();
-					if (makeReservationYN.equals("Y".toLowerCase())) {
-						PassengerAction("6", p, false, facade);
-					} else {
-						break;
-					}
-				} else {
-					System.out.println("These are your reservation: ");
-					List<Reservation> myReservations = p.getReservations();
-					for (Reservation reservation : myReservations){
-						System.out.println("=================");
-						System.out.println("Reservation Code: " + reservation.getReservationCode() +
-								"Status: " + reservation.getStatus() +
-								"Number of ticket: " + reservation.getTickets().size());
-						List<Ticket> ticketsList = reservation.getTickets();
-						for (Ticket ticket : ticketsList){
-							System.out.println("=================");
-							System.out.println("\nTicket number: " + ticket.getNumber() +
-									"\nDate: " + ticket.getFlight().getFlightDate() +
-									"\nDeparture: " + ticket.getFlight().getFlightNumber().getDepartureAirport().getName() +
-									" " + ticket.getFlight().getFlightNumber().getDepartureTime().toString() +
-									"\nArrival: " + ticket.getFlight().getFlightNumber().getArrivalAirport().getName() +
-									" " + ticket.getFlight().getFlightNumber().getArrivalTime().toString());
-						}
-					}
-				}
-			case "6":
-				System.out.print("Please enter name of departure airport: ");
-				departure = scanner.nextLine();
-				System.out.print("Please enter name of arrival airport: ");
-				arrival = scanner.nextLine();
-
-				flightsFromTo = facade.findFlightsFromTo(departure, arrival);
-				if (flightsFromTo.size() == 0) {
-					System.out.println("No flight for this route :(");
+				List<Reservation> myReservations = p.getReservations();
+				if (myReservations.size() == 0) {
+					System.out.println("No any reservation, please create a new one ");
 					break;
 				}
 
-				for (Flight flight : flightsFromTo) {
+				System.out.println("These are your reservation: ");
+				for (Reservation reservation : myReservations){
+					if (reservation.getReservationCode() == ""
+							|| reservation.getReservationCode() == null) {
+						continue;
+					}
 					System.out.println("=================");
-					System.out.println("Flight name: " + flight.getFlightNumber() +
-							"Date: " + flight.getFlightDate() +
-							"Passenger: " + flight.getPassengers() +
-							"Drive by: " + flight.getPilots());
+					System.out.println("Reservation Code: " + reservation.getReservationCode() +
+							"Status: " + reservation.getStatus() +
+							"Number of ticket: " + reservation.getTickets().size());
+					List<Ticket> ticketsList = reservation.getTickets();
+					for (Ticket ticket : ticketsList){
+						System.out.println("=================");
+						System.out.println("\nTicket number: " + ticket.getNumber() +
+								"\nDate: " + ticket.getFlight().getFlightDate() +
+								"\nDeparture: " + ticket.getFlight().getFlightNumber().getDepartureAirport().getName() +
+								" " + ticket.getFlight().getFlightNumber().getDepartureTime().toString() +
+								"\nArrival: " + ticket.getFlight().getFlightNumber().getArrivalAirport().getName() +
+								" " + ticket.getFlight().getFlightNumber().getArrivalTime().toString());
+					}
 				}
-				Reservation newReservation = facade.createReservation(p, flightsFromTo);
+				break;
+
+			case "6":
+//				System.out.print("Please enter name of departure airport: ");
+//				departure = scanner.nextLine();
+//				System.out.print("Please enter name of arrival airport: ");
+//				arrival = scanner.nextLine();
+//
+//				flightsFromTo = facade.findFlightsFromTo(departure, arrival);
+//				if (flightsFromTo.size() == 0) {
+//					System.out.println("No flight for this route :(");
+//					break;
+//				}
+//
+//				for (Flight flight : flightsFromTo) {
+//					System.out.println("=================");
+//					System.out.println("Flight name: " + flight.getFlightNumber() +
+//							"Date: " + flight.getFlightDate() +
+//							"Passenger: " + flight.getPassengers() +
+//							"Drive by: " + flight.getPilots());
+//				}
+
+				List<Flight> flights = StorageHandler.generateListFlightInstance(2);
+				Reservation newReservation = facade.createReservation(p, flights);
 				System.out.println("=================");
 				System.out.println("Reservation Code: " + newReservation.getReservationCode() +
-						"Status: " + newReservation.getStatus() +
-						"Number of ticket: " + newReservation.getTickets().size());
+						" Status: " + newReservation.getStatus() +
+						" Number of ticket: " + newReservation.getTickets().size());
 				System.out.println("Your reservation is added");
 				System.out.println("Do you want to confirm and purchase it? (Y/N)");
 				String confirmed = scanner.nextLine();
+
 				if(confirmed.equals("Y".toLowerCase())){
 					newReservation.confirm();
+					System.out.println("You confirmed and purchased successful the reservation " + newReservation.getReservationCode());
 				} else {
 					newReservation.cancel();
+					System.out.println("OOp, you cancelled the reservation " + newReservation.getReservationCode());
 				}
+
 			default:
 				break;
 		}
@@ -253,8 +271,6 @@ public class Application {
 				agentAction(action, agent, facade);
 			}
 		}
-		
-		
 	}
 
 	public static void agentAction(String actionCase, Agent a, ReservationSystemFacade facade) throws ParseException {
@@ -300,6 +316,12 @@ public class Application {
 				// print out airlines in this airport
 				String inputCode = scanner.nextLine();
 				List<Airline> airlinesByAirportCode = facade.findAirlinesByAirportCode(inputCode);
+
+				if (airlinesByAirportCode.size() == 0) {
+					System.out.println("OOP, No Airlines");
+					break;
+				}
+				System.out.println("We have Airlines list below: ");
 				for (Airline airline : airlinesByAirportCode) {
 					System.out.println("=================");
 					System.out.println("Name: " + airline.getName() +
@@ -354,9 +376,14 @@ public class Application {
 					System.out.println("Passenger Name: " + passenger.getFirstName() + " " + passenger.getLastName());
 					List<Reservation> pReservation = passenger.getReservations();
 					for (Reservation reservation : pReservation) {
+						if (reservation.getReservationCode() == ""
+								|| reservation.getReservationCode() == null) {
+							continue;
+						}
+
 						if (reservation.getAgentId().toString().equals(a.getUuid().toString())) {
 							System.out.println("=================");
-							System.out.println("Reservation Code: " + reservation.getReservationCode() +
+							System.out.println("Agent Book Reservation Code: " + reservation.getReservationCode() +
 									"Status: " + reservation.getStatus() +
 									"Number of ticket: " + reservation.getTickets().size());
 							List<Ticket> ticketsList = reservation.getTickets();
@@ -373,58 +400,69 @@ public class Application {
 					}
 				}
 				break;
+
 			case "6":
-				Passenger passenger = null;
-				System.out.println("Who you gonna make reservation for:");
-				System.out.println("First Name");
-				String fname = scanner.nextLine();
-				System.out.println("Last Name");
-				String lname = scanner.nextLine();
+//				Passenger passenger = null;
+//				System.out.println("Who you gonna make reservation for:");
+//				System.out.println("First Name");
+//				String fname = scanner.nextLine();
+//				System.out.println("Last Name");
+//				String lname = scanner.nextLine();
 
-				if(facade.findPassengersByName(a.getPassengers(), fname, lname) != null){
-					passenger = facade.findPassengersByName(a.getPassengers(), fname, lname);
-				} else {
-					System.out.println("This passenger is not in your list!!");
-					System.out.println("We need more information for register new passenger");
-					System.out.println("Email: ");
-					String email = scanner.next();
-					System.out.println("Date of birth (DD/MM/YYYY): ");
-					Date dob = new SimpleDateFormat("dd/MM/yyyy").parse(scanner.next());
-					passenger = new Passenger(fname, lname, dob, email, StorageHandler.getRandomAddress());
-					System.out.println("Your register is Done. ");
-				}
+//				if(facade.findPassengersByName(a.getPassengers(), fname, lname) != null){
+//					passenger = facade.findPassengersByName(a.getPassengers(), fname, lname);
+//				} else {
+//					System.out.println("This passenger is not in your list!!");
+//					System.out.println("We need more information for register new passenger");
+//					System.out.println("Email: ");
+//					String email = scanner.next();
+//					System.out.println("Date of birth (DD/MM/YYYY): ");
+//					Date dob = new SimpleDateFormat("dd/MM/yyyy").parse(scanner.next());
+//					passenger = new Passenger(fname, lname, dob, email, StorageHandler.getRandomAddress());
+//					System.out.println("Your register is Done. ");
+//				}
 
-				System.out.print("Please enter name of departure airport: ");
-				departure = scanner.nextLine();
-				System.out.print("Please enter name of arrival airport: ");
-				arrival = scanner.nextLine();
+				Passenger passenger = StorageHandler.passengers.get(1);
 
-				flightsFromTo = facade.findFlightsFromTo(departure, arrival);
-				if (flightsFromTo.size() == 0) {
-					System.out.println("No flight for this route :(");
-					break;
-				}
+//				System.out.print("Please enter name of departure airport: ");
+//				departure = scanner.nextLine();
+//				System.out.print("Please enter name of arrival airport: ");
+//				arrival = scanner.nextLine();
+//
+//				flightsFromTo = facade.findFlightsFromTo(departure, arrival);
+//				if (flightsFromTo.size() == 0) {
+//					System.out.println("No flight for this route :(");
+//					break;
+//				}
+//
+//				for (Flight flight : flightsFromTo) {
+//					System.out.println("=================");
+//					System.out.println("Flight name: " + flight.getFlightNumber() +
+//							"Date: " + flight.getFlightDate() +
+//							"Passenger: " + flight.getPassengers() +
+//							"Drive by: " + flight.getPilots());
+//				}
 
-				for (Flight flight : flightsFromTo) {
-					System.out.println("=================");
-					System.out.println("Flight name: " + flight.getFlightNumber() +
-							"Date: " + flight.getFlightDate() +
-							"Passenger: " + flight.getPassengers() +
-							"Drive by: " + flight.getPilots());
-				}
-				Reservation newReservation = facade.createReservation(a, passenger, flightsFromTo);
+				List<Flight> flights = StorageHandler.generateListFlightInstance(2);
+				Reservation newReservation = facade.createReservation(a, passenger, flights);
+
+				//TODO
 				System.out.println("=================");
-				System.out.println("Reservation Code: " + newReservation.getReservationCode() +
-						"Status: " + newReservation.getStatus() +
-						"Number of ticket: " + newReservation.getTickets().size());
+				System.out.println("Agent Book Reservation Code: " + newReservation.getReservationCode() +
+						" Status: " + newReservation.getStatus() +
+						" Number of ticket: " + newReservation.getTickets().size());
 				System.out.println("Your reservation is added");
 				System.out.println("Do you want to confirm and purchase it? (Y/N)");
 				String confirmed = scanner.nextLine();
 				if(confirmed.equals("Y".toLowerCase())){
 					newReservation.confirm();
+					System.out.println("You confirmed and purchased successful the reservation " + newReservation.getReservationCode());
 				} else {
 					newReservation.cancel();
+					System.out.println("OOp, you cancelled the reservation " + newReservation.getReservationCode());
 				}
+				break;
+
 			default:
 				break;
 		}
@@ -441,7 +479,7 @@ public class Application {
 		Agent agent = new Agent();
 		ReservationSystemFacade facade = new ReservationSystemFacadeImpl();
 		Passenger passenger = StorageHandler.getRandomPassenger(5);
-		passenger.addReservation(facade.createReservation(agent, passenger, StorageHandler.generateListFlightInstance(10)));
+		passenger.addReservation(facade.createReservation(agent, passenger, StorageHandler.generateListFlightInstance(5)));
 		
 		StorageHandler.addAgent(agent);
 		agent.addPassenger(passenger);
@@ -459,12 +497,12 @@ public class Application {
 					//TODO admin workflow
 					break;
 				case "2":
-					System.out.println("Can i know your name ?");
-					System.out.println("First Name: ");
-					fname = scanner.nextLine();
-					System.out.println("Last Name: ");
-					lname = scanner.nextLine();
-					passengerFlow(fname,lname);
+//					System.out.println("Can i know your name ?");
+//					System.out.println("First Name: ");
+//					fname = scanner.nextLine();
+//					System.out.println("Last Name: ");
+//					lname = scanner.nextLine();
+					passengerFlow();
 					break;
 				case "3":
 					//TODO Agent workflow
@@ -474,6 +512,7 @@ public class Application {
 					break;
 				case "4":
 					isRunApp = false;
+					System.out.println("Bye Bye");
 					break;
 			}
 		}

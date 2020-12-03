@@ -24,11 +24,12 @@ public class Reservation {
      *
      */
     public Reservation() {
-        reservationCode = StringHelper.getRandomAlphaString(6);
+        this.reservationCode = StringHelper.getRandomAlphaString(6);
     }
 
     public Reservation(UUID agentId) {
         AgentId = agentId;
+        this.reservationCode = StringHelper.getRandomAlphaString(6);
     }
 
     public Reservation(List<Ticket> tickets) {
@@ -40,7 +41,7 @@ public class Reservation {
     }
 
     public String getReservationCode() {
-        return reservationCode;
+        return this.reservationCode;
     }
 
     public UUID getAgentId() {

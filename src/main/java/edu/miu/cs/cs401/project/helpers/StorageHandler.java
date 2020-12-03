@@ -21,15 +21,15 @@ public class StorageHandler {
 
     public static HashMap<String, List<Ticket>> ticketsByReservationCode = new HashMap<>();
 
-    public static List<Ticket> getTicketByReservationCode(String reservationCode){
+    public static List<Ticket> getTicketByReservationCode(String reservationCode) {
         return ticketsByReservationCode.get(reservationCode);
     }
 
-    public static List<Ticket> setTickets(String reservationCode, List<Ticket> tickets){
+    public static List<Ticket> setTickets(String reservationCode, List<Ticket> tickets) {
         return ticketsByReservationCode.put(reservationCode, tickets);
     }
 
-    public static List<Ticket> removeTickets(String reservationCode){
+    public static List<Ticket> removeTickets(String reservationCode) {
         return ticketsByReservationCode.remove(reservationCode);
     }
 
@@ -40,7 +40,7 @@ public class StorageHandler {
 
     public static List<Reservation> getAllReservations() {
         List<Reservation> reservations = new ArrayList<>();
-        for(Map.Entry<String, Reservation> entry: reservationsMap.entrySet()) {
+        for (Map.Entry<String, Reservation> entry : reservationsMap.entrySet()) {
             reservations.add(entry.getValue());
         }
         return reservations;
@@ -60,91 +60,93 @@ public class StorageHandler {
     // End reservations
 
     public static Address getRandomAddress() {
-    	return new Address("Main road", StringHelper.getRandomCityName(), StringHelper.getRandomStateName(), (int)(Math.random() * 1000) + 3000);
+        return new Address("Main road", StringHelper.getRandomCityName(), StringHelper.getRandomStateName(), (int) (Math.random() * 1000) + 3000);
     }
-    
+
     public static void createRandomAddresses(int amount) {
-    	for (int i = 0; i < amount; i++) {
-    		addresses.add(getRandomAddress());
-    	}
+        for (int i = 0; i < amount; i++) {
+            addresses.add(getRandomAddress());
+        }
     }
 
-    public static int randomNumber(){
-        return (int)(Math.random() * 1000);
+    public static int randomNumber() {
+        return (int) (Math.random() * 1000);
     }
 
-    public static String randomReservationCode(){
+    public static String randomReservationCode() {
         int len = 6;
         String AB = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         SecureRandom rnd = new SecureRandom();
         StringBuilder sb = new StringBuilder(len);
-        for(int i = 0; i < len; i++)
+        for (int i = 0; i < len; i++)
             sb.append(AB.charAt(rnd.nextInt(AB.length())));
         return sb.toString();
     }
 
-    public static String randomTicketNumber(){
+    public static String randomTicketNumber() {
         int len = 20;
         String AB = "0123456789";
         SecureRandom rnd = new SecureRandom();
         StringBuilder sb = new StringBuilder(len);
-        for(int i = 0; i < len; i++)
+        for (int i = 0; i < len; i++)
             sb.append(AB.charAt(rnd.nextInt(AB.length())));
         return sb.toString();
     }
 
-    public static List<Passenger> getListPassenger(int amount){
-        for (int i = 0; i< amount; i++) {
+    public static List<Passenger> getListPassenger(int amount) {
+        for (int i = 0; i < amount; i++) {
             passengers.add(getRandomPassenger(i));
         }
         return passengers;
     }
 
-    public static Passenger getRandomPassenger(int unique){
+    public static Passenger getRandomPassenger(int unique) {
         return new Passenger(
-                "name" + unique,
-                "last name" + unique,
+                "fn" + unique,
+                "ln" + unique,
                 new Date(),
-                unique +"_email@gmail.com",
+                "e"+unique +"@gmail.com",
                 getRandomAddress()
         );
     }
 
-    public static Agent getRandomAgent(int amountPassenger){
+    public static Agent getRandomAgent(int amountPassenger) {
         return new Agent(getListPassenger(amountPassenger));
     }
 
-    public static void addAgent(Agent agent){agents.add(agent); }
+    public static void addAgent(Agent agent) {
+        agents.add(agent);
+    }
 
     public static void emptyAddresses() {
-    	addresses.removeAll(addresses);
+        addresses.removeAll(addresses);
     }
-    
+
     public static Airport getRandomAirport() {
-    	final String airportCode = ((int)(Math.random() * 900)+ 100 ) + "";
-    	return new Airport(airportCode, StringHelper.getRandomCityName() + " Airport", getRandomAddress());
+        final String airportCode = ((int) (Math.random() * 900) + 100) + "";
+        return new Airport(airportCode, StringHelper.getRandomCityName() + " Airport", getRandomAddress());
     }
-    
+
     public static Airline getRandomAirline() {
-    	return new Airline((int)(Math.random() * 900) + "", "Turkish Airlines", "Turkish Airlines is established in ...");
+        return new Airline((int) (Math.random() * 900) + "", "Turkish Airlines", "Turkish Airlines is established in ...");
     }
 
     public static void createRandomAirports(int amount) {
-    	for (int i = 0; i < amount; i++) {
-    		airports.add(getRandomAirport());
-    	}
+        for (int i = 0; i < amount; i++) {
+            airports.add(getRandomAirport());
+        }
     }
 
     public static void emptyAirports() {
-    	airports.removeAll(airports);
+        airports.removeAll(airports);
     }
-    
+
     public static void emptyFlights() {
-    	flights.removeAll(flights);
+        flights.removeAll(flights);
     }
 
     public static FlightNumber createRandomFlightNumber(int amount) {
-        int number = (int)Math.random();
+        int number = (int) Math.random();
         int capacity = amount;
         Airline airlineOwn = new Airline("AIA", "American Airline", "history");
         Airport departureAirport = getRandomAirport();
@@ -157,29 +159,29 @@ public class StorageHandler {
 
         return fn;
     }
-    
+
     public static void createRandomFlightNumbers(int amount, Airport departureAirport, Airport arrivalAirport) {
-    	for (int i = 0; i < amount; i++)
-        	flightNumbers.add(getRandomFlightNumber(departureAirport, arrivalAirport));
+        for (int i = 0; i < amount; i++)
+            flightNumbers.add(getRandomFlightNumber(departureAirport, arrivalAirport));
     }
 
-	private static FlightNumber getRandomFlightNumber(Airport departureAirport, Airport arrivalAirport) {
-		return new FlightNumber(
-				(int)Math.random(),
-				300,
-				new Airline("AIA", "American Airline", "history"),
-				departureAirport,
-				arrivalAirport,
-				new Date(),
-				new Date()
-			);
-	}
-    
-    public static void createRandomFlights(int amount, Airport departureAirport, Airport arrivalAirport) {
-    	for (int i = 0; i < amount; i++)
-        	flights.add(getRandomFlight(departureAirport, arrivalAirport));
+    private static FlightNumber getRandomFlightNumber(Airport departureAirport, Airport arrivalAirport) {
+        return new FlightNumber(
+                (int) Math.random(),
+                300,
+                new Airline("AIA", "American Airline", "history"),
+                departureAirport,
+                arrivalAirport,
+                new Date(),
+                new Date()
+        );
     }
-    
+
+    public static void createRandomFlights(int amount, Airport departureAirport, Airport arrivalAirport) {
+        for (int i = 0; i < amount; i++)
+            flights.add(getRandomFlight(departureAirport, arrivalAirport));
+    }
+
     public static Flight getRandomFlight(Airport departureAirport, Airport arrivalAirport) {
         Date dateFlight = new Date();
         List<Passenger> passengers = getListPassenger(10);
@@ -187,12 +189,12 @@ public class StorageHandler {
         List<String> crews = createRandomCrew(5);
 
         return new Flight(
-        		getRandomFlightNumber(departureAirport, arrivalAirport),
+                getRandomFlightNumber(departureAirport, arrivalAirport),
                 dateFlight,
                 passengers,
                 crews,
                 pilots
-            );
+        );
     }
 
     public static List<String> createRandomPilots(int amount) {
@@ -211,8 +213,8 @@ public class StorageHandler {
         return crews;
     }
 
-    public static Flight createRandomFlightInstance(){
-        int number = (int)Math.random();
+    public static Flight createRandomFlightInstance() {
+        int number = (int) Math.random();
         int capacity = 30;
         Airline airlineOwn = new Airline("AIA", "American Airline", "history");
         Airport departureAirport = getRandomAirport();
@@ -228,7 +230,7 @@ public class StorageHandler {
                 passengers,
                 crews,
                 pilots
-            );
+        );
     }
 
     public static List<Flight> generateListFlightInstance(int amount) {
@@ -246,12 +248,8 @@ public class StorageHandler {
         Passenger passenger = StorageHandler.getRandomPassenger(5);
         passenger.addReservation(facade.createReservation(agent, passenger, StorageHandler.generateListFlightInstance(10)));
 
-
         StorageHandler.addAgent(agent);
         agent.addPassenger(passenger);
-        System.out.println(agent.getUuid().toString() + " " + passenger.getFirstName() + " " + passenger.getLastName());
-
-        System.out.println("initializeData");
 
         List<Passenger> passengers = getListPassenger(5);
         Agent a1 = getRandomAgent(0);
@@ -266,9 +264,10 @@ public class StorageHandler {
 
         // create reservation
         List<Flight> flights = generateListFlightInstance(5);
+        StorageHandler.flights.addAll(flights);
 
         Reservation reservation = new Reservation();
-        for(Flight flight: flights){
+        for (Flight flight : flights) {
             Ticket reservationTicket =
                     new Ticket(StorageHandler.randomTicketNumber(),
                             reservation.getReservationCode(),
@@ -282,8 +281,7 @@ public class StorageHandler {
         StorageHandler.createRandomAirports(10);
         StorageHandler.getRandomAirline();
 
-
-		// Add some
+       // Add some
 		int i = 0;
 		while (i++ < 20) {
 			FlightNumber flightNumber = new FlightNumber(
@@ -300,7 +298,7 @@ public class StorageHandler {
     }
 
     public static void printReservations() {
-        for (Reservation r: reservations) {
+        for (Reservation r : reservations) {
             System.out.print("reservation: " + r.getAgentId());
         }
     }
