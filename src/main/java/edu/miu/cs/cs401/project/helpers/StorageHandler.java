@@ -160,6 +160,27 @@ public class StorageHandler {
         return fn;
     }
 
+    public static FlightNumber createFixedFlightNumber(int amount) {
+        int number = (int) Math.random();
+        int capacity = amount;
+        Airline airlineOwn = new Airline("AIA", "American Airline", "history");
+
+        final String airportCode = ((int) (Math.random() * 900) + 100) + "";
+
+        Airport departureAirport = new Airport(airportCode, "Chicago Airport", getRandomAddress());
+        Airport arrivalAirport = new Airport(airportCode, "New York City Airport", getRandomAddress());
+        Date departureTime = new Date();
+        Date arrivalTime = new Date();
+
+        FlightNumber fn = new FlightNumber(number, capacity, airlineOwn, departureAirport, arrivalAirport, departureTime, arrivalTime);
+        flightNumbers.add(fn);
+
+        return fn;
+    }
+
+
+
+
     public static void createRandomFlightNumbers(int amount, Airport departureAirport, Airport arrivalAirport) {
         for (int i = 0; i < amount; i++)
             flightNumbers.add(getRandomFlightNumber(departureAirport, arrivalAirport));
@@ -233,10 +254,34 @@ public class StorageHandler {
         );
     }
 
+    public static Flight createFixedFlightInstance() {
+        int number = (int) Math.random();
+        int capacity = 30;
+        Airline airlineOwn = new Airline("AIA", "American Airline", "history");
+        Airport departureAirport = getRandomAirport();
+        Airport arrivalAirport = getRandomAirport();
+        Date dateFlight = new Date();
+        List<Passenger> passengers = getListPassenger(10);
+        List<String> pilots = createRandomPilots(5);
+        List<String> crews = createRandomCrew(5);
+
+        return new Flight(
+                createFixedFlightNumber(5),
+                dateFlight,
+                passengers,
+                crews,
+                pilots
+        );
+    }
+
     public static List<Flight> generateListFlightInstance(int amount) {
         List<Flight> flightInstances = new ArrayList<>();
         for (int i = 0; i < amount; i++) {
-            flightInstances.add(createRandomFlightInstance());
+            if (i % 2 ==0) {
+                flightInstances.add(createFixedFlightInstance());
+            } else {
+                flightInstances.add(createRandomFlightInstance());
+            }
         }
         return flightInstances;
     }
