@@ -16,15 +16,18 @@ public interface AdminFacade {
     void updatePassengerEmail(Passenger passenger, String email);
     void deletePassenger(Passenger passenger);
 
+    void createAgent(Agent agent);
     void readAgent(Agent agent);
     void deleteAgent(Agent agent);
 
+    void createAirport(Airport airport);
     void readAirport(Airport airport);
     void updateAirportName(Airport airport, String name);
     void updateAirportCode(Airport airport, String code);
     void updateAirportAddress(Airport airport, Address address);
     void deleteAirport(Airport airport);
 
+    void createAirline(Airline airline);
     void readAirline(Airline airline);
     void updateAirlineName(Airline airline, String name);
     void updateAirlineCode(Airline airline, String code);
