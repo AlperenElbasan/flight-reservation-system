@@ -443,7 +443,7 @@ public class Application {
 
 		StorageHandler.addAgent(agent);
 		agent.addPassenger(passenger);
-		System.out.println(agent.getUuid().toString());
+		System.out.println("Use this Agent UUID: " + agent.getUuid().toString());
 
 		boolean isRunApp = true;
 		while (isRunApp) {
