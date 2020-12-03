@@ -229,17 +229,24 @@ public class Application {
 
 		// List out use case for user
 		if(isAgent) {
-			System.out.println("This is some action you can do: ");
-			System.out.println(
-					"1. List all available Airports" +
-							"\n2. Search Airlines by Airport CODE" +
-							"\n3. Search Airport by CITY NAME" +
-							"\n4. Search flight by Departure and Arrival" +
-							"\n5. My Reservation for passenger" +
-							"\n6. Create Reservation");
-			System.out.println("Please select one of these action: ");
-			String action = scanner.next();
-			agentAction(action, agent, facade);
+			while (true) {
+				System.out.println("This is some action you can do: ");
+				System.out.println(
+						"1. List all available Airports" +
+								"\n2. Search Airlines by Airport CODE" +
+								"\n3. Search Airport by CITY NAME" +
+								"\n4. Search flight by Departure and Arrival" +
+								"\n5. My Reservation for passenger" +
+								"\n6. Create Reservation" +
+								"\n7. Quit");
+				System.out.println("Please select one of these action: ");
+
+				String action = scanner.next();
+				if(action.equals("7")) {
+					break;
+				}
+				agentAction(action, agent, facade);
+			}
 		}
 
 	}
@@ -250,6 +257,7 @@ public class Application {
 		String arrival;
 		List<Flight> flightsFromTo;
 		List<Airport> airports;
+
 		switch (actionCase) {
 			case "1": // View all airport
 				// here is the list of them
@@ -282,7 +290,8 @@ public class Application {
 				}
 				System.out.println("Please select Airport Code to get Airlines list: ");
 				// print out airlines in this airport
-				List<Airline> airlinesByAirportCode = facade.findAirlinesByAirportCode(scanner.nextLine());
+				String inputCode = scanner.nextLine();
+				List<Airline> airlinesByAirportCode = facade.findAirlinesByAirportCode(inputCode);
 				for (Airline airline : airlinesByAirportCode) {
 					System.out.println("=================");
 					System.out.println("Name: " + airline.getName() +
