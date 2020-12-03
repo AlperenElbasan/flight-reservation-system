@@ -1,6 +1,8 @@
 package edu.miu.cs.cs401.project.helpers;
 
 import edu.miu.cs.cs401.project.domain.*;
+import edu.miu.cs.cs401.project.service.ReservationSystemFacade;
+import edu.miu.cs.cs401.project.service.ReservationSystemFacadeImpl;
 
 import java.security.SecureRandom;
 import java.util.*;
@@ -235,6 +237,16 @@ public class StorageHandler {
     }
 
     public static void initializeData() {
+        //Test Agent flow data
+        Agent agent = new Agent();
+        ReservationSystemFacade facade = new ReservationSystemFacadeImpl();
+        Passenger passenger = StorageHandler.getRandomPassenger(5);
+        passenger.addReservation(facade.createReservation(agent, passenger, StorageHandler.generateListFlightInstance(10)));
+
+
+        StorageHandler.addAgent(agent);
+        agent.addPassenger(passenger);
+        System.out.println(agent.getUuid().toString() + " " + passenger.getFirstName() + " " + passenger.getLastName());
 
         System.out.println("initializeData");
     }

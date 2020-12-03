@@ -165,9 +165,9 @@ public class Application {
 							System.out.println("\nTicket number: " + ticket.getNumber() +
 									"\nDate: " + ticket.getFlight().getFlightDate() +
 									"\nDeparture: " + ticket.getFlight().getFlightNumber().getDepartureAirport().getName() +
-									" " + ticket.getFlight().getFlightNumber().getDepartureTime().toString() +
+									", " + ticket.getFlight().getFlightNumber().getDepartureTime().toString() +
 									"\nArrival: " + ticket.getFlight().getFlightNumber().getArrivalAirport().getName() +
-									" " + ticket.getFlight().getFlightNumber().getArrivalTime().toString());
+									", " + ticket.getFlight().getFlightNumber().getArrivalTime().toString());
 						}
 					}
 				}
@@ -348,9 +348,9 @@ public class Application {
 								System.out.println("\nTicket number: " + ticket.getNumber() +
 										"\nDate: " + ticket.getFlight().getFlightDate() +
 										"\nDeparture: " + ticket.getFlight().getFlightNumber().getDepartureAirport().getName() +
-										" " + ticket.getFlight().getFlightNumber().getDepartureTime().toString() +
+										", " + ticket.getFlight().getFlightNumber().getDepartureTime().toString() +
 										"\nArrival: " + ticket.getFlight().getFlightNumber().getArrivalAirport().getName() +
-										" " + ticket.getFlight().getFlightNumber().getArrivalTime().toString());
+										", " + ticket.getFlight().getFlightNumber().getArrivalTime().toString());
 							}
 						}
 					}
@@ -416,17 +416,7 @@ public class Application {
 	public static void main(String[] args) throws ParseException {
 		Scanner scanner = new Scanner(System.in);
 		String fname, lname;
-
-		//Test Agent flow data
-		Agent agent = new Agent();
-		ReservationSystemFacade facade = new ReservationSystemFacadeImpl();
-		Passenger passenger = StorageHandler.getRandomPassenger(5);
-		passenger.addReservation(facade.createReservation(agent, passenger, StorageHandler.generateListFlightInstance(10)));
-
-
-		StorageHandler.addAgent(agent);
-		agent.addPassenger(passenger);
-		System.out.println(agent.getUuid().toString());
+		StorageHandler.initializeData();
 
 		System.out.println("Who are you???");
 		System.out.println("1. Admin\n2. Passenger\n3. Agent");
