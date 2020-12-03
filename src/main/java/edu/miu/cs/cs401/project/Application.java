@@ -42,25 +42,29 @@ public class Application {
 
 		// List out use case for user
 		System.out.println("This is some action you can do: ");
-		System.out.println("1. List all available Airports" +
-				"\n2. Search Airport by CODE" +
+		System.out.println(
+				"1. List all available Airports" +
+				"\n2. Search Airlines by Airport CODE" +
 				"\n3. Search Airport by CITY NAME" +
 				"\n4. Some action" +
 				"\n5. Search flight by Departure and Arrival" +
 				"\n6. My Reservation" +
 				"\n7. Create Reservation" +
-				"\n8. Cancel Reservation");
+				"\n8. Cancel Reservation" +
+				"\n9. Confirm Reservation");
 		System.out.println("Please select one of these action: ");
 		String action = scanner.next();
 
 		PassengerAction(action, passenger, newPassenger, facade);
-
 	}
 
 	public static void PassengerAction(String actionCase, Passenger p, boolean newPassenger, ReservationSystemFacade facade){
 		Scanner scanner = new Scanner(System.in);
+		String departure;
+		String arrival;
+		List<Flight> flightsFromTo;
 		switch (actionCase) {
-			case "1": // Search Airport by CODE
+			case "1": // View all airport
 				// here is the list of them
 				List<Airport> airports = facade.findAllAirports();
 				System.out.println("Here is the list of all airports:");
@@ -74,21 +78,21 @@ public class Application {
 							", " + airport.getAddress().getZip());
 				}
 				System.out.println();
-
 				break;
-			case "2": //Search Airport by CITY NAME
+
+			case "2": // Search Airport by CODE
 				// here is the list of all airlines
 				System.out.print("Please enter the code of the airport that you seek: ");
 				Airport searchedAirport = facade.findAirportByAirportCode(scanner.nextLine());
 
-				// print out searched airport
-				System.out.println("=================");
-				System.out.println("Name: " + searchedAirport.getName() +
-						"\nCode: " + searchedAirport.getCode() +
-						"\nAddress: " + searchedAirport.getAddress().getStreet() +
-						", " + searchedAirport.getAddress().getCity() +
-						", " + searchedAirport.getAddress().getState() +
-						", " + searchedAirport.getAddress().getZip());
+				// print out airlines in this airport
+				List<Airline> airlinesByAirportCode = facade.findAirlinesByAirportCode(scanner.nextLine());
+				for (Airline airline : airlinesByAirportCode) {
+					System.out.println("=================");
+					System.out.println("Name: " + airline.getName() +
+							"\nCode: " + airline.getCode() +
+							"\nHistory: " + airline.getHistory());
+				}
 				System.out.println();
 				break;
 
@@ -110,46 +114,17 @@ public class Application {
 				System.out.println();
 				break;
 
-			case "4": // Not a use case
-
-				// lets add some flight to the airport that's asked
-				int i = 0;
-				while (i++ < 20) {
-					FlightNumber flightNumber = new FlightNumber(
-							i,
-							350,
-							StorageHandler.getRandomAirline(),
-							StorageHandler.airports.get(i % StorageHandler.airports.size()),
-							StorageHandler.airports.get((i + 1) % StorageHandler.airports.size()),
-							new Date(),
-							new Date()
-					);
-					StorageHandler.flightNumbers.add(flightNumber);
-				}
-
-				System.out.println("Creating new flight numbers...");
-				for (FlightNumber flightNumber : StorageHandler.flightNumbers)
-					System.out.println(flightNumber);
-				System.out.println();
-
-				System.out.print("Please enter the airport code: ");
-				List<Airline> airlinesByAirportCode = facade.findAirlinesByAirportCode(scanner.nextLine());
-				for (Airline airline : airlinesByAirportCode)
-					System.out.println(airline);
-				System.out.println();
-
-				break;
-
-			case "5": // Search fly by CITY name
+			case "4": // Search fly by CITY name
 				System.out.print("Please enter name of departure airport: ");
-				String departure = scanner.nextLine();
+				departure = scanner.nextLine();
 				System.out.print("Please enter name of arrival airport: ");
-				String arrival = scanner.nextLine();
+				arrival = scanner.nextLine();
 
-				List<Flight> flightsFromTo = facade.findFlightsFromTo(departure, arrival);
+				flightsFromTo = facade.findFlightsFromTo(departure, arrival);
 				if (flightsFromTo.size() == 0)
 					System.out.println("No flight for this route :(");
 				for (Flight flight : flightsFromTo) {
+					System.out.println("=================");
 					System.out.println("Flight name: " + flight.getFlightNumber() +
 							"Date: " + flight.getFlightDate() +
 							"Passenger: " + flight.getPassengers() +
@@ -158,21 +133,60 @@ public class Application {
 				System.out.println();
 				break;
 
-			case "6":
-				if(newPassenger){
+			case "5":
+				if(newPassenger) {
 					System.out.println("You done have any Reservation now");
 					System.out.println("Do you want to make a Reservation? (Y/N)");
 					String makeReservationYN = scanner.next();
-					if (makeReservationYN.equals("Y")){
+					if (makeReservationYN.equals("Y")) {
 						PassengerAction("7", p, false, facade);
+					} else {
+						break;
 					}
+				} else {
+					System.out.println("These are your reservation: ");
+					List<Reservation> myReservations = p.getReservations();
+					for (Reservation reservation : myReservations){
+						System.out.println("=================");
+						System.out.println("Reservation Code: " + reservation.getReservationCode() +
+								"Status: " + reservation.getStatus() +
+								"Number of ticket: " + reservation.getTickets().size());
+					}
+				}
+			case "6":
+				System.out.print("Please enter name of departure airport: ");
+				departure = scanner.nextLine();
+				System.out.print("Please enter name of arrival airport: ");
+				arrival = scanner.nextLine();
+
+				flightsFromTo = facade.findFlightsFromTo(departure, arrival);
+				if (flightsFromTo.size() == 0) {
+					System.out.println("No flight for this route :(");
 					break;
 				}
-			case "7":
-				System.out.println("");
-				facade.createReservation(p,flightsFromTo);
-			case "8":
-			case "9":
+
+				for (Flight flight : flightsFromTo) {
+					System.out.println("=================");
+					System.out.println("Flight name: " + flight.getFlightNumber() +
+							"Date: " + flight.getFlightDate() +
+							"Passenger: " + flight.getPassengers() +
+							"Drive by: " + flight.getPilots());
+				}
+				Reservation newReservation = facade.createReservation(p, flightsFromTo);
+				System.out.println("=================");
+				System.out.println("Reservation Code: " + newReservation.getReservationCode() +
+						"Status: " + newReservation.getStatus() +
+						"Number of ticket: " + newReservation.getTickets().size());
+				System.out.println("Your reservation is added");
+				System.out.println("Do you want to confirm and purchase it? (Y/N)");
+				String confirmed = scanner.nextLine();
+				if(confirmed.equals("Y")){
+					newReservation.confirm();
+				} else {
+					newReservation.cancel();
+				}
+			default:
+				break;
 		}
 	}
 

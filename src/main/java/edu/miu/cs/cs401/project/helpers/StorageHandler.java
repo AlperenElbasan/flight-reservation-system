@@ -232,6 +232,7 @@ public class StorageHandler {
     }
 
     public static void initializeData() {
+
         System.out.println("initializeData");
 
         List<Passenger> passengers = getListPassenger(5);
