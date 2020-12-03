@@ -9,13 +9,13 @@ public class Agent {
     private final List<Passenger> passengers;
 
     public Agent() {
-        this.uuid = UUID.randomUUID();;
-        this.passengers = new ArrayList<>();;
+        this.uuid = UUID.randomUUID();
+        this.passengers = new ArrayList<>();
     }
 
     public Agent(List<Passenger> passengers) {
-        this.uuid = UUID.randomUUID();;
-        this.passengers = passengers;;
+        this.uuid = UUID.randomUUID();
+        this.passengers = passengers;
     }
 
     public UUID getUuid() {

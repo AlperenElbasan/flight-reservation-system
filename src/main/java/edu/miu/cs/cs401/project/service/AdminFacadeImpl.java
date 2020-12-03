@@ -47,6 +47,11 @@ public class AdminFacadeImpl implements AdminFacade {
         StorageHandler.passengers.remove(passenger);
     }
 
+    @Override
+    public void createAgent(Agent agent) {
+        StorageHandler.agents.add(agent);
+    }
+
 
     // Agent CRUD
     @Override
@@ -62,6 +67,11 @@ public class AdminFacadeImpl implements AdminFacade {
     @Override
     public void deleteAgent(Agent agent) {
         StorageHandler.agents.remove(agent);
+    }
+
+    @Override
+    public void createAirport(Airport airport) {
+        StorageHandler.airports.add(airport);
     }
 
     @Override
@@ -91,6 +101,11 @@ public class AdminFacadeImpl implements AdminFacade {
     }
 
     // Airline CRUD
+    @Override
+    public void createAirline(Airline airline) {
+        StorageHandler.airlines.add(airline);
+    }
+
     @Override
     public void readAirline(Airline airline) {
         System.out.println("=== READ AIRPORT ===");
