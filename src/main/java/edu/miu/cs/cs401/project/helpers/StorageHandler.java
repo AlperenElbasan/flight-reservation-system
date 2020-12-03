@@ -262,6 +262,12 @@ public class StorageHandler {
 
         addReservation(reservation);
         setTickets(reservation.getReservationCode(), reservation.getTickets());
+
+        StorageHandler.createRandomAirports(10);
+        StorageHandler.getRandomAirline();
+
+        //TODO:
+
     }
 
     public static void printReservations() {

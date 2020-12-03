@@ -18,8 +18,6 @@ public class Application {
 		Scanner scanner = new Scanner(System.in);
 		boolean newPassenger;
 		Passenger passenger;
-		// lets first add some airports.
-		StorageHandler.createRandomAirports(10);
 
 		// and create the object for reservation facade implementation
 		ReservationSystemFacade facade = new ReservationSystemFacadeImpl();
@@ -220,9 +218,6 @@ public class Application {
 		Scanner scanner = new Scanner(System.in);
 		boolean isAgent = false;
 		Agent agent = null;
-		// lets first add some airports.
-		StorageHandler.createRandomAirports(10);
-
 		// and create the object for reservation facade implementation
 		ReservationSystemFacade facade = new ReservationSystemFacadeImpl();
 
