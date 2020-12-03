@@ -212,6 +212,8 @@ public class Application {
 			default:
 				break;
 		}
+		
+		scanner.close();
 	}
 		
 	public static void agentFlow(String uuid) throws ParseException {
@@ -251,7 +253,8 @@ public class Application {
 				agentAction(action, agent, facade);
 			}
 		}
-
+		
+		scanner.close();
 	}
 
 	public static void agentAction(String actionCase, Agent a, ReservationSystemFacade facade) throws ParseException {
@@ -266,6 +269,7 @@ public class Application {
 				// here is the list of them
 				airports = facade.findAllAirports();
 				System.out.println("Here is the list of all airports:");
+				
 				for (Airport airport : airports) {
 					System.out.println("=================");
 					System.out.println("Name: " + airport.getName() +
@@ -276,6 +280,7 @@ public class Application {
 							", " + airport.getAddress().getZip());
 				}
 				System.out.println();
+				
 				break;
 
 			case "2": // Search Airport by CODE
@@ -423,6 +428,8 @@ public class Application {
 			default:
 				break;
 		}
+		
+		scanner.close();
 	}
 
 
@@ -435,7 +442,7 @@ public class Application {
 		ReservationSystemFacade facade = new ReservationSystemFacadeImpl();
 		Passenger passenger = StorageHandler.getRandomPassenger(5);
 		passenger.addReservation(facade.createReservation(agent, passenger, StorageHandler.generateListFlightInstance(10)));
-
+		
 		StorageHandler.addAgent(agent);
 		agent.addPassenger(passenger);
 		System.out.println("Use this Agent UUID: " + agent.getUuid().toString());
