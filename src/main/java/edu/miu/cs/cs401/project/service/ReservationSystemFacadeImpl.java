@@ -146,4 +146,18 @@ public class ReservationSystemFacadeImpl implements ReservationSystemFacade {
 		StorageHandler.removeReservation(reservationCode);
 	}
 
+
+
+	@Override
+	public Agent findAgentByUuid(String agentId) {
+		if (agentId.length() != 5){
+			return null;
+		}
+
+		for (Agent agent: StorageHandler.agents)
+			if (agent.getUuid().toString().equals(agentId))
+				return agent;
+
+		return null;
+	}
 }

@@ -35,4 +35,6 @@ public interface ReservationSystemFacade {
 	void confirmReservation(String reservationCode);
 	
 	void cancelReservation(String reservationCode);
+
+	Agent findAgentByUuid(String agentId);
 }
