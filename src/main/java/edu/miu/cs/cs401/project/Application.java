@@ -428,30 +428,37 @@ public class Application {
 		agent.addPassenger(passenger);
 		System.out.println(agent.getUuid().toString());
 
-		Scanner scanner = new Scanner(System.in);
-		System.out.println("Who are you???");
-		System.out.println("1. Admin\n2. Passenger\n3. Agent");
-		String role = scanner.nextLine();
+		boolean isRunApp = true;
+		while (isRunApp) {
+			Scanner scanner = new Scanner(System.in);
+			System.out.println("Who are you???");
+			System.out.println("1. Admin\n2. Passenger\n3. Agent\n4. Quit");
+			String role = scanner.nextLine();
 
-		switch (role) {
-			case "1":
-				//TODO admin workflow
-				break;
-			case "2":
-				System.out.println("Can i know your name ?");
-				System.out.println("First Name: ");
-				fname = scanner.nextLine();
-				System.out.println("Last Name: ");
-				lname = scanner.nextLine();
-				passengerFlow(fname,lname);
-				//TODO Passenger workflow
-				break;
-			case "3":
-				//TODO Agent workflow
-				System.out.println("Please provide your first 5 digit of UUID");
-				String uuid = scanner.nextLine();
-				agentFlow(uuid);
-				break;
+			switch (role) {
+				case "1":
+					//TODO admin workflow
+					break;
+				case "2":
+					System.out.println("Can i know your name ?");
+					System.out.println("First Name: ");
+					fname = scanner.nextLine();
+					System.out.println("Last Name: ");
+					lname = scanner.nextLine();
+					passengerFlow(fname,lname);
+					break;
+				case "3":
+					//TODO Agent workflow
+					System.out.println("Please provide your first 5 digit of UUID");
+					String uuid = scanner.nextLine();
+					agentFlow(uuid);
+					break;
+				case "4":
+					isRunApp = false;
+					break;
+			}
 		}
+
+		System.exit(0);
 	}
 }
