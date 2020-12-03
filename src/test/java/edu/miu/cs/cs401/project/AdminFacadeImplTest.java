@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 import edu.miu.cs.cs401.project.domain.*;
+import edu.miu.cs.cs401.project.helpers.StringHelper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -18,6 +19,8 @@ import edu.miu.cs.cs401.project.service.ReservationSystemFacade;
 import edu.miu.cs.cs401.project.service.ReservationSystemFacadeImpl;
 import edu.miu.cs.cs401.project.constants.ReservationStatus;
 import java.time.LocalDate;
+import java.util.UUID;
+
 class AdminFacadeImplTest {
 	AdminFacadeImpl adminFacade = new AdminFacadeImpl(); 
 
@@ -72,45 +75,103 @@ class AdminFacadeImplTest {
 
 	@Test
 	public void testDeleteAgent() {
+		Agent agent = new Agent();
+
+		int numberOfAgents = StorageHandler.agents.size();
+		StorageHandler.agents.add(agent);
+
+		adminFacade.deleteAgent(agent);
+		assertEquals(StorageHandler.agents.size(), numberOfAgents - 1);
 	}
 
 	@Test
 	public void testReadAirport() {
+		adminFacade.readAirport(StorageHandler.getRandomAirport());
 	}
 
 	@Test
 	public void testUpdateAirportName() {
+		Airport airport = StorageHandler.airports.get(0);
+		String name = "NewAirportName";
+		String oldName = airport.getName();
+
+		adminFacade.updateAirportName(airport, name);
+		assertEquals(airport.getName(), name);
+
+		adminFacade.updateAirportName(airport, oldName);
+		assertEquals(StorageHandler.airports.get(0).getName(), name);
 	}
 
 	@Test
 	public void testUpdateAirportCode() {
+		Airport airport = StorageHandler.airports.get(0);
+		String code = "NewAirportCode";
+		String oldCode = airport.getCode();
+
+		adminFacade.updateAirportCode(airport, code);
+		assertEquals(airport.getCode(), code);
+
+		adminFacade.updateAirportCode(airport, oldCode);
+		assertEquals(StorageHandler.airports.get(0).getCode(), code);
 	}
 
 	@Test
 	public void testUpdateAirportAddress() {
+		Airport airport = StorageHandler.airports.get(0);
+		Address oldAddress = airport.getAddress();
+		Address newAddress = new Address("newStreet","newCity","newState", 12345);
+
+		adminFacade.updateAirportAddress(airport, newAddress);
+		assertEquals(StorageHandler.airports.get(0).getAddress().getZip(), newAddress.getZip());
+
+		adminFacade.updateAirportAddress(airport, oldAddress);
+		assertEquals(StorageHandler.airports.get(0).getAddress().getZip(), oldAddress.getZip());
 	}
 
 	@Test
 	public void testDeleteAirport() {
+		Airport airport = StorageHandler.airports.get(0);
+		String uuid = airport.getUuid().toString();
+
+		adminFacade.deleteAirport(airport);
+		assertNotEquals(StorageHandler.airports.get(0).getUuid().toString(), uuid);
 	}
 
 	@Test
 	public void testReadAirline() {
+		Airline airline = new Airline("code", "newName", "history");
+		adminFacade.readAirline(airline);
 	}
 
 	@Test
 	public void testUpdateAirlineName() {
+		Airline airline = new Airline("code", "newName", "history");
+		adminFacade.updateAirlineName(airline, "otherName");
+		assertEquals(airline.getName(), "otherName");
 	}
 
 	@Test
 	public void testUpdateAirlineCode() {
+		Airline airline = new Airline("code", "newName", "history");
+		adminFacade.updateAirlineCode(airline, "otherCode");
+		assertEquals(airline.getCode(), "otherCode");
 	}
 
 	@Test
 	public void testUpdateAirlinegetHistory() {
+		Airline airline = new Airline("code", "newName", "history");
+		adminFacade.updateAirlinegetHistory(airline, "otherHistory");
+		assertEquals(airline.getHistory(), "otherHistory");
 	}
 
 	@Test
 	public void testDeleteAirline() {
+		Airline airline = new Airline("newCode", "newName", "-");
+		UUID uuid = airline.getUuid();
+
+		adminFacade.createAirline(airline);
+
+		int lastIndex = StorageHandler.airlines.size() - 1;
+		assertEquals(StorageHandler.airlines.get(lastIndex).getUuid().toString(), uuid.toString());
 	}
 }
