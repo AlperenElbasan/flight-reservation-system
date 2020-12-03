@@ -152,8 +152,8 @@ public class Application {
 					System.out.println("You done have any Reservation now");
 					System.out.println("Do you want to make a Reservation? (Y/N)");
 					String makeReservationYN = scanner.next();
-					if (makeReservationYN.equals("Y")) {
-						PassengerAction("7", p, false, facade);
+					if (makeReservationYN.equals("Y".toLowerCase())) {
+						PassengerAction("6", p, false, facade);
 					} else {
 						break;
 					}
@@ -204,7 +204,7 @@ public class Application {
 				System.out.println("Your reservation is added");
 				System.out.println("Do you want to confirm and purchase it? (Y/N)");
 				String confirmed = scanner.nextLine();
-				if(confirmed.equals("Y")){
+				if(confirmed.equals("Y".toLowerCase())){
 					newReservation.confirm();
 				} else {
 					newReservation.cancel();
@@ -415,7 +415,7 @@ public class Application {
 				System.out.println("Your reservation is added");
 				System.out.println("Do you want to confirm and purchase it? (Y/N)");
 				String confirmed = scanner.nextLine();
-				if(confirmed.equals("Y")){
+				if(confirmed.equals("Y".toLowerCase())){
 					newReservation.confirm();
 				} else {
 					newReservation.cancel();
