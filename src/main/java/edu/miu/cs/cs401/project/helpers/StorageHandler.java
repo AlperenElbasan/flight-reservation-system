@@ -17,7 +17,6 @@ public class StorageHandler {
 
     public static HashMap<String, Reservation> reservationsMap = new HashMap<>();
 
-
     public static HashMap<String, List<Ticket>> ticketsByReservationCode = new HashMap<>();
 
     public static List<Ticket> getTicketByReservationCode(String reservationCode){
@@ -234,6 +233,32 @@ public class StorageHandler {
 
     public static void initializeData() {
         System.out.println("initializeData");
+
+        List<Passenger> passengers = getListPassenger(5);
+        Agent a1 = getRandomAgent(0);
+        a1.addPassenger(passengers.get(0));
+        a1.addPassenger(passengers.get(1));
+        a1.addPassenger(passengers.get(2));
+
+        Agent a2 = getRandomAgent(0);
+        a2.addPassenger(passengers.get(2));
+        a2.addPassenger(passengers.get(3));
+        a2.addPassenger(passengers.get(4));
+
+        // create reservation
+        List<Flight> flights = generateListFlightInstance(5);
+
+        Reservation reservation = new Reservation();
+        for(Flight flight: flights){
+            Ticket reservationTicket =
+                    new Ticket(StorageHandler.randomTicketNumber(),
+                            reservation.getReservationCode(),
+                            flight);
+            reservation.addTicket(reservationTicket);
+        }
+
+        addReservation(reservation);
+        setTickets(reservation.getReservationCode(), reservation.getTickets());
     }
 
     public static void printReservations() {

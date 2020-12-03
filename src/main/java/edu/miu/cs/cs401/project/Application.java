@@ -176,10 +176,10 @@ public class Application {
 		}
 	}
 
-
 	public static void main(String[] args) throws ParseException {
-		Scanner scanner = new Scanner(System.in);
+		StorageHandler.initializeData();
 
+		Scanner scanner = new Scanner(System.in);
 		System.out.println("Who are you???");
 		System.out.println("1. Admin\n2. Passenger\n3. Agent");
 		String role = scanner.nextLine();
@@ -200,9 +200,7 @@ public class Application {
 				break;
 			case "3":
 				//TODO Agent workflow
-
 				break;
 		}
 	}
-
 }
