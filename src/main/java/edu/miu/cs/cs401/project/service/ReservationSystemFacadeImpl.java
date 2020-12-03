@@ -98,6 +98,16 @@ public class ReservationSystemFacadeImpl implements ReservationSystemFacade {
 	}
 
 	@Override
+	public Passenger findPassengersByName(List<Passenger> passengers, String firstName, String lastName) {
+		for (Passenger p : passengers) {
+			if (p.getFirstName().equals(firstName) && p.getLastName().equals(lastName)) {
+				return p;
+			}
+		}
+		return null;
+	}
+
+	@Override
 	public Reservation createReservation(Passenger passenger, List<Flight> flights) {
 		Reservation reservation = new Reservation();
 		for(Flight flight: flights){
@@ -146,8 +156,6 @@ public class ReservationSystemFacadeImpl implements ReservationSystemFacade {
 		StorageHandler.removeReservation(reservationCode);
 	}
 
-
-
 	@Override
 	public Agent findAgentByUuid(String agentId) {
 		if (agentId.length() != 5){
@@ -155,9 +163,12 @@ public class ReservationSystemFacadeImpl implements ReservationSystemFacade {
 		}
 
 		for (Agent agent: StorageHandler.agents)
-			if (agent.getUuid().toString().equals(agentId))
+			if (agent.getUuid().toString()
+					.replace("-", "")
+					.substring(0,4)
+					.toUpperCase()
+					.equals(agentId.toUpperCase()))
 				return agent;
-
 		return null;
 	}
 }
