@@ -100,7 +100,7 @@ class ReservationSystemFacadeImplTest {
 	void findFlightsFromToTest() {
 		StorageHandler.emptyFlights();
 		StorageHandler.emptyAirports();
-		StorageHandler.createRandomFlight(10);
+		StorageHandler.createRandomFlightNumber(10);
 
 		final int SIZE = 5;
 

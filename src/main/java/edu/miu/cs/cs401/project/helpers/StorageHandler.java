@@ -143,7 +143,7 @@ public class StorageHandler {
     	flights.removeAll(flights);
     }
 
-    public static FlightNumber createRandomFlight(int amount) {
+    public static FlightNumber createRandomFlightNumber(int amount) {
         int number = (int)Math.random();
         int capacity = amount;
         Airline airlineOwn = new Airline("AIA", "American Airline", "history");
@@ -151,7 +151,11 @@ public class StorageHandler {
         Airport arrivalAirport = getRandomAirport();
         Date departureTime = new Date();
         Date arrivalTime = new Date();
-        return new FlightNumber(number, capacity, airlineOwn, departureAirport, arrivalAirport, departureTime, arrivalTime);
+
+        FlightNumber fn = new FlightNumber(number, capacity, airlineOwn, departureAirport, arrivalAirport, departureTime, arrivalTime);
+        flightNumbers.add(fn);
+
+        return fn;
     }
     
     public static void createRandomFlightNumbers(int amount, Airport departureAirport, Airport arrivalAirport) {
@@ -219,7 +223,7 @@ public class StorageHandler {
         List<String> crews = createRandomCrew(5);
 
         return new Flight(
-                createRandomFlight(5),
+                createRandomFlightNumber(5),
                 dateFlight,
                 passengers,
                 crews,
@@ -278,8 +282,8 @@ public class StorageHandler {
         StorageHandler.createRandomAirports(10);
         StorageHandler.getRandomAirline();
 
-		
-		// Add some 
+
+		// Add some
 		int i = 0;
 		while (i++ < 20) {
 			FlightNumber flightNumber = new FlightNumber(
@@ -294,6 +298,10 @@ public class StorageHandler {
 			StorageHandler.flightNumbers.add(flightNumber);
 		}
 
+        for (Airport a: airports) {
+            a.addArrivalFlights( createRandomFlightNumber(3));
+            a.addDepartureFlight( createRandomFlightNumber(2));
+        }
     }
 
     public static void printReservations() {
@@ -301,6 +309,4 @@ public class StorageHandler {
             System.out.print("reservation: " + r.getAgentId());
         }
     }
-
-
 }
