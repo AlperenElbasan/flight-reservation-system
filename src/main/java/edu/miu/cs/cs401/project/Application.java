@@ -213,7 +213,7 @@ public class Application {
 				break;
 		}
 		
-		scanner.close();
+		
 	}
 		
 	public static void agentFlow(String uuid) throws ParseException {
@@ -254,7 +254,7 @@ public class Application {
 			}
 		}
 		
-		scanner.close();
+		
 	}
 
 	public static void agentAction(String actionCase, Agent a, ReservationSystemFacade facade) throws ParseException {
@@ -429,7 +429,7 @@ public class Application {
 				break;
 		}
 		
-		scanner.close();
+		
 	}
 
 

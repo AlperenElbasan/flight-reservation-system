@@ -297,11 +297,6 @@ public class StorageHandler {
 			);
 			StorageHandler.flightNumbers.add(flightNumber);
 		}
-
-        for (Airport a: airports) {
-            a.addArrivalFlights( createRandomFlightNumber(3));
-            a.addDepartureFlight( createRandomFlightNumber(2));
-        }
     }
 
     public static void printReservations() {
