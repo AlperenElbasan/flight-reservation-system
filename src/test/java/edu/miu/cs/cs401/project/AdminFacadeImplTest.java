@@ -82,12 +82,11 @@ class AdminFacadeImplTest {
 	@Test
 	public void testDeleteAgent() {
 		Agent agent = new Agent();
-
-		int numberOfAgents = StorageHandler.agents.size();
 		StorageHandler.agents.add(agent);
+		int numberOfAgents = StorageHandler.agents.size();
 
 		adminFacade.deleteAgent(agent);
-		assertEquals(StorageHandler.agents.size(), numberOfAgents - 1);
+		assertTrue(StorageHandler.agents.size() == numberOfAgents - 1);
 	}
 
 	@Test
@@ -97,6 +96,9 @@ class AdminFacadeImplTest {
 
 	@Test
 	public void testUpdateAirportName() {
+		StorageHandler.emptyAirports();
+		StorageHandler.createRandomAirports(5);
+		
 		Airport airport = StorageHandler.airports.get(0);
 		String name = "NewAirportName";
 		String oldName = airport.getName();
@@ -105,11 +107,14 @@ class AdminFacadeImplTest {
 		assertEquals(airport.getName(), name);
 
 		adminFacade.updateAirportName(airport, oldName);
-		assertEquals(StorageHandler.airports.get(0).getName(), name);
+		assertEquals(StorageHandler.airports.get(0).getName(), oldName);
 	}
 
 	@Test
 	public void testUpdateAirportCode() {
+		StorageHandler.emptyAirports();
+		StorageHandler.createRandomAirports(5);
+		
 		Airport airport = StorageHandler.airports.get(0);
 		String code = "NewAirportCode";
 		String oldCode = airport.getCode();
@@ -118,7 +123,7 @@ class AdminFacadeImplTest {
 		assertEquals(airport.getCode(), code);
 
 		adminFacade.updateAirportCode(airport, oldCode);
-		assertEquals(StorageHandler.airports.get(0).getCode(), code);
+		assertEquals(StorageHandler.airports.get(0).getCode(), oldCode);
 	}
 
 	@Test
