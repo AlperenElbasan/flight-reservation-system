@@ -42,18 +42,26 @@ public class Application {
 		}
 
 		// List out use case for user
-		System.out.println("This is some action you can do: ");
-		System.out.println(
-				"1. List all available Airports" +
-				"\n2. Search Airlines by Airport CODE" +
-				"\n3. Search Airport by CITY NAME" +
-				"\n4. Search flight by Departure and Arrival" +
-				"\n5. My Reservation" +
-				"\n6. Create Reservation");
-		System.out.println("Please select one of these action: ");
-		String action = scanner.next();
 
-		PassengerAction(action, passenger, newPassenger, facade);
+		while (true) {
+			System.out.println("This is some action you can do: ");
+			System.out.println(
+					"1. List all available Airports" +
+							"\n2. Search Airlines by Airport CODE" +
+							"\n3. Search Airport by CITY NAME" +
+							"\n4. Search flight by Departure and Arrival" +
+							"\n5. My Reservation" +
+							"\n6. Create Reservation" +
+							"\n7. Quit");
+			System.out.println("Please select one of these action: ");
+			String action = scanner.next();
+			if (action.equals("7")) {
+				break;
+			}
+
+			PassengerAction(action, passenger, newPassenger, facade);
+		}
+
 	}
 
 	public static void PassengerAction(String actionCase, Passenger p, boolean newPassenger, ReservationSystemFacade facade){
