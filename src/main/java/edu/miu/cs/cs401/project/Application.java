@@ -18,8 +18,6 @@ public class Application {
 		Scanner scanner = new Scanner(System.in);
 		boolean newPassenger;
 		Passenger passenger;
-		// lets first add some airports.
-		StorageHandler.createRandomAirports(10);
 
 		// and create the object for reservation facade implementation
 		ReservationSystemFacade facade = new ReservationSystemFacadeImpl();
@@ -42,18 +40,26 @@ public class Application {
 		}
 
 		// List out use case for user
-		System.out.println("This is some action you can do: ");
-		System.out.println(
-				"1. List all available Airports" +
-				"\n2. Search Airlines by Airport CODE" +
-				"\n3. Search Airport by CITY NAME" +
-				"\n4. Search flight by Departure and Arrival" +
-				"\n5. My Reservation" +
-				"\n6. Create Reservation");
-		System.out.println("Please select one of these action: ");
-		String action = scanner.next();
 
-		PassengerAction(action, passenger, newPassenger, facade);
+		while (true) {
+			System.out.println("This is some action you can do: ");
+			System.out.println(
+					"1. List all available Airports" +
+							"\n2. Search Airlines by Airport CODE" +
+							"\n3. Search Airport by CITY NAME" +
+							"\n4. Search flight by Departure and Arrival" +
+							"\n5. My Reservation" +
+							"\n6. Create Reservation" +
+							"\n7. Quit");
+			System.out.println("Please select one of these action: ");
+			String action = scanner.next();
+			if (action.equals("7")) {
+				break;
+			}
+
+			PassengerAction(action, passenger, newPassenger, facade);
+		}
+
 	}
 
 	public static void PassengerAction(String actionCase, Passenger p, boolean newPassenger, ReservationSystemFacade facade){
@@ -165,9 +171,9 @@ public class Application {
 							System.out.println("\nTicket number: " + ticket.getNumber() +
 									"\nDate: " + ticket.getFlight().getFlightDate() +
 									"\nDeparture: " + ticket.getFlight().getFlightNumber().getDepartureAirport().getName() +
-									", " + ticket.getFlight().getFlightNumber().getDepartureTime().toString() +
+									" " + ticket.getFlight().getFlightNumber().getDepartureTime().toString() +
 									"\nArrival: " + ticket.getFlight().getFlightNumber().getArrivalAirport().getName() +
-									", " + ticket.getFlight().getFlightNumber().getArrivalTime().toString());
+									" " + ticket.getFlight().getFlightNumber().getArrivalTime().toString());
 						}
 					}
 				}
@@ -207,14 +213,11 @@ public class Application {
 				break;
 		}
 	}
-
+		
 	public static void agentFlow(String uuid) throws ParseException {
 		Scanner scanner = new Scanner(System.in);
 		boolean isAgent = false;
 		Agent agent = null;
-		// lets first add some airports.
-		StorageHandler.createRandomAirports(10);
-
 		// and create the object for reservation facade implementation
 		ReservationSystemFacade facade = new ReservationSystemFacadeImpl();
 
@@ -229,17 +232,24 @@ public class Application {
 
 		// List out use case for user
 		if(isAgent) {
-			System.out.println("This is some action you can do: ");
-			System.out.println(
-					"1. List all available Airports" +
-							"\n2. Search Airlines by Airport CODE" +
-							"\n3. Search Airport by CITY NAME" +
-							"\n4. Search flight by Departure and Arrival" +
-							"\n5. My Reservation for passenger" +
-							"\n6. Create Reservation");
-			System.out.println("Please select one of these action: ");
-			String action = scanner.next();
-			agentAction(action, agent, facade);
+			while (true) {
+				System.out.println("This is some action you can do: ");
+				System.out.println(
+						"1. List all available Airports" +
+								"\n2. Search Airlines by Airport CODE" +
+								"\n3. Search Airport by CITY NAME" +
+								"\n4. Search flight by Departure and Arrival" +
+								"\n5. My Reservation for passenger" +
+								"\n6. Create Reservation" +
+								"\n7. Quit");
+				System.out.println("Please select one of these action: ");
+
+				String action = scanner.next();
+				if(action.equals("7")) {
+					break;
+				}
+				agentAction(action, agent, facade);
+			}
 		}
 
 	}
@@ -250,6 +260,7 @@ public class Application {
 		String arrival;
 		List<Flight> flightsFromTo;
 		List<Airport> airports;
+
 		switch (actionCase) {
 			case "1": // View all airport
 				// here is the list of them
@@ -282,7 +293,8 @@ public class Application {
 				}
 				System.out.println("Please select Airport Code to get Airlines list: ");
 				// print out airlines in this airport
-				List<Airline> airlinesByAirportCode = facade.findAirlinesByAirportCode(scanner.nextLine());
+				String inputCode = scanner.nextLine();
+				List<Airline> airlinesByAirportCode = facade.findAirlinesByAirportCode(inputCode);
 				for (Airline airline : airlinesByAirportCode) {
 					System.out.println("=================");
 					System.out.println("Name: " + airline.getName() +
@@ -348,9 +360,9 @@ public class Application {
 								System.out.println("\nTicket number: " + ticket.getNumber() +
 										"\nDate: " + ticket.getFlight().getFlightDate() +
 										"\nDeparture: " + ticket.getFlight().getFlightNumber().getDepartureAirport().getName() +
-										", " + ticket.getFlight().getFlightNumber().getDepartureTime().toString() +
+										" " + ticket.getFlight().getFlightNumber().getDepartureTime().toString() +
 										"\nArrival: " + ticket.getFlight().getFlightNumber().getArrivalAirport().getName() +
-										", " + ticket.getFlight().getFlightNumber().getArrivalTime().toString());
+										" " + ticket.getFlight().getFlightNumber().getArrivalTime().toString());
 							}
 						}
 					}
@@ -413,37 +425,52 @@ public class Application {
 		}
 	}
 
+
 	public static void main(String[] args) throws ParseException {
-		Scanner scanner = new Scanner(System.in);
-		String fname, lname;
 		StorageHandler.initializeData();
+		String fname, lname;
 
-		System.out.println("Who are you???");
-		System.out.println("1. Admin\n2. Passenger\n3. Agent");
-		String role = scanner.nextLine();
+		//Test Agent flow data
+		Agent agent = new Agent();
+		ReservationSystemFacade facade = new ReservationSystemFacadeImpl();
+		Passenger passenger = StorageHandler.getRandomPassenger(5);
+		passenger.addReservation(facade.createReservation(agent, passenger, StorageHandler.generateListFlightInstance(10)));
 
+		StorageHandler.addAgent(agent);
+		agent.addPassenger(passenger);
+		System.out.println("Use this Agent UUID: " + agent.getUuid().toString());
 
-		switch (role) {
-			case "1":
-				//TODO admin workflow
+		boolean isRunApp = true;
+		while (isRunApp) {
+			Scanner scanner = new Scanner(System.in);
+			System.out.println("Who are you???");
+			System.out.println("1. Admin\n2. Passenger\n3. Agent\n4. Quit");
+			String role = scanner.nextLine();
 
-				break;
-			case "2":
-				System.out.println("Can i know your name ?");
-				System.out.println("First Name: ");
-				fname = scanner.nextLine();
-				System.out.println("Last Name: ");
-				lname = scanner.nextLine();
-				passengerFlow(fname,lname);
-				//TODO Passenger workflow
-				break;
-			case "3":
-				//TODO Agent workflow
-				System.out.println("Please provide your first 5 digit of UUID");
-				String uuid = scanner.nextLine();
-				agentFlow(uuid);
-				break;
+			switch (role) {
+				case "1":
+					//TODO admin workflow
+					break;
+				case "2":
+					System.out.println("Can i know your name ?");
+					System.out.println("First Name: ");
+					fname = scanner.nextLine();
+					System.out.println("Last Name: ");
+					lname = scanner.nextLine();
+					passengerFlow(fname,lname);
+					break;
+				case "3":
+					//TODO Agent workflow
+					System.out.println("Please provide your first 5 digit of UUID");
+					String uuid = scanner.nextLine();
+					agentFlow(uuid);
+					break;
+				case "4":
+					isRunApp = false;
+					break;
+			}
 		}
-	}
 
+		System.exit(0);
+	}
 }
