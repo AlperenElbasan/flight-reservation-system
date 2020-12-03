@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
+import java.util.UUID;
 
 public class Application {
 
@@ -46,16 +47,55 @@ public class Application {
 				"1. List all available Airports" +
 				"\n2. Search Airlines by Airport CODE" +
 				"\n3. Search Airport by CITY NAME" +
-				"\n4. Some action" +
-				"\n5. Search flight by Departure and Arrival" +
-				"\n6. My Reservation" +
-				"\n7. Create Reservation" +
-				"\n8. Cancel Reservation" +
-				"\n9. Confirm Reservation");
+				"\n4. Search flight by Departure and Arrival" +
+				"\n5. My Reservation" +
+				"\n6. Create Reservation");
 		System.out.println("Please select one of these action: ");
 		String action = scanner.next();
 
 		PassengerAction(action, passenger, newPassenger, facade);
+	}
+
+	public static void agentFlow(String uuid) throws ParseException {
+		Scanner scanner = new Scanner(System.in);
+		boolean newPassenger;
+		Passenger passenger;
+		// lets first add some airports.
+		StorageHandler.createRandomAirports(10);
+
+		// and create the object for reservation facade implementation
+		ReservationSystemFacade facade = new ReservationSystemFacadeImpl();
+
+		// Check if Agent new?
+//		if(facade.findAgen(fname, lname) != null){
+//			System.out.println("Welcome back " + fname + " " + lname +" to Airline Reservation System");
+//			passenger = facade.findPassengersByName(fname, lname);
+//			newPassenger = false;
+//		} else {
+//			System.out.println("Welcome " + fname + " " + lname +" to Airline Reservation System");
+//			System.out.println("We need more information for register new passenger");
+//			System.out.println("Email: ");
+//			String email = scanner.next();
+//			System.out.println("Date of birth (DD/MM/YYYY): ");
+//			Date dob = new SimpleDateFormat("dd/MM/yyyy").parse(scanner.next());
+//			passenger = new Passenger(fname, lname, dob, email, StorageHandler.getRandomAddress());
+//			System.out.println("Your register is Done. ");
+//			newPassenger = true;
+//		}
+
+		// List out use case for user
+		System.out.println("This is some action you can do: ");
+		System.out.println(
+				"1. List all available Airports" +
+						"\n2. Search Airlines by Airport CODE" +
+						"\n3. Search Airport by CITY NAME" +
+						"\n4. Search flight by Departure and Arrival" +
+						"\n5. My Reservation" +
+						"\n6. Create Reservation");
+		System.out.println("Please select one of these action: ");
+		String action = scanner.next();
+
+
 	}
 
 	public static void PassengerAction(String actionCase, Passenger p, boolean newPassenger, ReservationSystemFacade facade){
@@ -63,10 +103,11 @@ public class Application {
 		String departure;
 		String arrival;
 		List<Flight> flightsFromTo;
+		List<Airport> airports;
 		switch (actionCase) {
 			case "1": // View all airport
 				// here is the list of them
-				List<Airport> airports = facade.findAllAirports();
+				airports = facade.findAllAirports();
 				System.out.println("Here is the list of all airports:");
 				for (Airport airport : airports) {
 					System.out.println("=================");
@@ -82,9 +123,18 @@ public class Application {
 
 			case "2": // Search Airport by CODE
 				// here is the list of all airlines
-				System.out.print("Please enter the code of the airport that you seek: ");
-				Airport searchedAirport = facade.findAirportByAirportCode(scanner.nextLine());
-
+				System.out.println("Here is the list of all airports:");
+				airports = facade.findAllAirports();
+				for (Airport airport : airports) {
+					System.out.println("=================");
+					System.out.println("Name: " + airport.getName() +
+							"\nCode: " + airport.getCode() +
+							"\nAddress: " + airport.getAddress().getStreet() +
+							", " + airport.getAddress().getCity() +
+							", " + airport.getAddress().getState() +
+							", " + airport.getAddress().getZip());
+				}
+				System.out.println("Please select Airport Code to get Airlines list: ");
 				// print out airlines in this airport
 				List<Airline> airlinesByAirportCode = facade.findAirlinesByAirportCode(scanner.nextLine());
 				for (Airline airline : airlinesByAirportCode) {
@@ -193,15 +243,12 @@ public class Application {
 
 	public static void main(String[] args) throws ParseException {
 		Scanner scanner = new Scanner(System.in);
-
+		String fname, lname;
 		System.out.println("Who are you???");
 		System.out.println("1. Admin\n2. Passenger\n3. Agent");
 		String role = scanner.nextLine();
-		System.out.println("Can i know your name ?");
-		System.out.println("First Name: ");
-		String fname = scanner.nextLine();
-		System.out.println("Last Name: ");
-		String lname = scanner.nextLine();
+
+
 
 		switch (role) {
 			case "1":
@@ -209,12 +256,19 @@ public class Application {
 
 				break;
 			case "2":
+				System.out.println("Can i know your name ?");
+				System.out.println("First Name: ");
+				fname = scanner.nextLine();
+				System.out.println("Last Name: ");
+				lname = scanner.nextLine();
 				passengerFlow(fname,lname);
 				//TODO Passenger workflow
 				break;
 			case "3":
 				//TODO Agent workflow
-
+				System.out.println("Please provide your UUID");
+				String uuid = scanner.nextLine();
+				agentFlow(uuid);
 				break;
 		}
 	}
