@@ -283,12 +283,7 @@ public class StorageHandler {
         StorageHandler.createRandomAirports(10);
         StorageHandler.getRandomAirline();
 
-        for (Airport a : airports) {
-            a.addArrivalFlights(createRandomFlightNumber(3));
-            a.addDepartureFlight(createRandomFlightNumber(2));
-        }
-
-		// Add some
+       // Add some
 		int i = 0;
 		while (i++ < 20) {
 			FlightNumber flightNumber = new FlightNumber(
