@@ -88,19 +88,9 @@ public class ReservationSystemFacadeImpl implements ReservationSystemFacade {
 	}
 
 	@Override
-	public Passenger findPassengersByFirstName(String firstName) {
+	public Passenger findPassengersByName(String firstName, String lastName) {
 		for (Passenger p : StorageHandler.passengers) {
-			if (p.getFirstName().equals(firstName)) {
-				return p;
-			}
-		}
-		return null;
-	}
-
-	@Override
-	public Passenger findPassengersByLastName(String lastName) {
-		for (Passenger p : StorageHandler.passengers) {
-			if (p.getLastName().equals(lastName)) {
+			if (p.getFirstName().equals(firstName) && p.getLastName().equals(lastName)) {
 				return p;
 			}
 		}

@@ -175,18 +175,12 @@ class ReservationSystemFacadeImplTest {
 	}
 
 	@Test
-	public void findPassengersByFirstName() {
+	public void findPassengersByName() {
 		List<Passenger> listPassengers = StorageHandler.getListPassenger(5);
-		Passenger p = facade.findPassengersByFirstName("name2");
+		Passenger p = facade.findPassengersByName("fname1","lname1");
 		assertNotNull(p);
-		assertEquals(p.getFirstName(), "name2");
+		assertEquals(p.getFirstName(), "fname1");
+		assertEquals(p.getLastName(), "lname1");
 	}
 
-	@Test
-	public void findPassengersByLastName() {
-		List<Passenger> listPassengers = StorageHandler.getListPassenger(5);
-		Passenger p = facade.findPassengersByLastName("last name3");
-		assertNotNull(p);
-		assertEquals(p.getLastName(), "last name3");
-	}
 }
