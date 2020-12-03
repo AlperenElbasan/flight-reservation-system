@@ -59,7 +59,6 @@ public class Application {
 
 			PassengerAction(action, passenger, newPassenger, facade);
 		}
-
 	}
 
 	public static void PassengerAction(String actionCase, Passenger p, boolean newPassenger, ReservationSystemFacade facade){
@@ -148,35 +147,30 @@ public class Application {
 				break;
 
 			case "5":
-				if(newPassenger) {
-					System.out.println("You done have any Reservation now");
-					System.out.println("Do you want to make a Reservation? (Y/N)");
-					String makeReservationYN = scanner.next();
-					if (makeReservationYN.equals("Y".toLowerCase())) {
-						PassengerAction("6", p, false, facade);
-					} else {
-						break;
-					}
-				} else {
-					System.out.println("These are your reservation: ");
-					List<Reservation> myReservations = p.getReservations();
-					for (Reservation reservation : myReservations){
+				List<Reservation> myReservations = p.getReservations();
+				if (myReservations.size() == 0) {
+					System.out.println("No any reservation, please create a new one ");
+					break;
+				}
+
+				System.out.println("These are your reservation: ");
+				for (Reservation reservation : myReservations){
+					System.out.println("=================");
+					System.out.println("Reservation Code: " + reservation.getReservationCode() +
+							"Status: " + reservation.getStatus() +
+							"Number of ticket: " + reservation.getTickets().size());
+					List<Ticket> ticketsList = reservation.getTickets();
+					for (Ticket ticket : ticketsList){
 						System.out.println("=================");
-						System.out.println("Reservation Code: " + reservation.getReservationCode() +
-								"Status: " + reservation.getStatus() +
-								"Number of ticket: " + reservation.getTickets().size());
-						List<Ticket> ticketsList = reservation.getTickets();
-						for (Ticket ticket : ticketsList){
-							System.out.println("=================");
-							System.out.println("\nTicket number: " + ticket.getNumber() +
-									"\nDate: " + ticket.getFlight().getFlightDate() +
-									"\nDeparture: " + ticket.getFlight().getFlightNumber().getDepartureAirport().getName() +
-									" " + ticket.getFlight().getFlightNumber().getDepartureTime().toString() +
-									"\nArrival: " + ticket.getFlight().getFlightNumber().getArrivalAirport().getName() +
-									" " + ticket.getFlight().getFlightNumber().getArrivalTime().toString());
-						}
+						System.out.println("\nTicket number: " + ticket.getNumber() +
+								"\nDate: " + ticket.getFlight().getFlightDate() +
+								"\nDeparture: " + ticket.getFlight().getFlightNumber().getDepartureAirport().getName() +
+								" " + ticket.getFlight().getFlightNumber().getDepartureTime().toString() +
+								"\nArrival: " + ticket.getFlight().getFlightNumber().getArrivalAirport().getName() +
+								" " + ticket.getFlight().getFlightNumber().getArrivalTime().toString());
 					}
 				}
+
 			case "6":
 				System.out.print("Please enter name of departure airport: ");
 				departure = scanner.nextLine();
