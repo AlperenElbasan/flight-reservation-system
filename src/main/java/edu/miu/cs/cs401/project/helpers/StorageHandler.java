@@ -250,9 +250,6 @@ public class StorageHandler {
 
         StorageHandler.addAgent(agent);
         agent.addPassenger(passenger);
-        System.out.println(agent.getUuid().toString() + " " + passenger.getFirstName() + " " + passenger.getLastName());
-
-        System.out.println("initializeData");
 
         List<Passenger> passengers = getListPassenger(5);
         Agent a1 = getRandomAgent(0);
@@ -267,6 +264,7 @@ public class StorageHandler {
 
         // create reservation
         List<Flight> flights = generateListFlightInstance(5);
+        StorageHandler.flights.addAll(flights);
 
         Reservation reservation = new Reservation();
         for (Flight flight : flights) {
